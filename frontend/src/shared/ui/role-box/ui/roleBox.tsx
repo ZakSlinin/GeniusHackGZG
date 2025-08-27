@@ -1,4 +1,5 @@
-import "./bars.css";
+import { Bar } from "../../scoreBar/bar";
+import "./roleBox.css";
 import type { VolunteerGroup } from "@/shared/types/volunteerGroup.ts";
 
 /**
@@ -23,13 +24,7 @@ export const RoleBox = ({ name, needed, registered }: VolunteerGroup) => {
           {registered}/{needed}
         </button>
       </span>
-      <div className={"barContainer"}>
-        <div style={
-          {
-            width: level + "%",
-          }
-        } className={"bar"}></div>
-      </div>
+      <Bar level={level}/>
     </div>
   );
 };
