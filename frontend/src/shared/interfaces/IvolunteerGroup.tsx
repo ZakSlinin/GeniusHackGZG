@@ -1,4 +1,4 @@
-export interface VolunteerGroup {
+export interface IvolunteerGroup {
   name: string,
   needed: number,
   registered: number,

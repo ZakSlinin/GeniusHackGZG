@@ -2,14 +2,14 @@ import "./createEvent.scss";
 import { Input, InputDate, InputTime, Textarea } from "@/shared/ui/input/";
 import * as React from "react";
 import { useState } from "react";
-import type { VolunteerGroup } from "@/shared/types/volunteerGroup.ts";
+import type { IvolunteerGroup } from "@/shared/interfaces/IvolunteerGroup.tsx";
 import { TrashBucket } from "@/shared/icons/TrashBucket.tsx";
 import { creatingEventAPI } from "@/Processes/CreatingEvent/CreatingEvent.ts";
 
 export const CreateNewEvent = () => {
   const { CreateNewEvent } = creatingEventAPI;
 
-  const [roles, setRoles] = useState<VolunteerGroup[]>([{
+  const [roles, setRoles] = useState<IvolunteerGroup[]>([{
     name: "",
     needed: 0,
     registered: 0,

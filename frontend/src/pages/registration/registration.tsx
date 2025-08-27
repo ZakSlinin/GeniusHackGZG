@@ -1,7 +1,7 @@
 import "./signIn.scss";
 import { Input } from "@/shared/ui/input";
 
-export const SignIn = () => {
+export const Registration = () => {
   return (
     <div className={"body"}>
       <div className={"container"}>
