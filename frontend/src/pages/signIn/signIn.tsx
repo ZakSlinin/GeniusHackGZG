@@ -1,6 +1,6 @@
 import "./signIn.scss";
 
-export function SignIn() {
+export const SignIn = () => {
   return (
     <div>
       <div className={"container"}>

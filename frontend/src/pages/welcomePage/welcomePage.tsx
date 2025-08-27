@@ -1,6 +1,6 @@
 import "./welcomePage.scss";
 
-export function WelcomePage() {
+export const WelcomePage = () => {
   return (
     <div>
       <div className={"container"}>
