@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/ZakSlinin/GeniusHackGZG/auth/model"
 	"github.com/jmoiron/sqlx"
 	"reflect"
 	"strings"
@@ -16,16 +15,6 @@ type AuthRepository struct {
 
 func _NewAuthRepository(db *sqlx.DB) *AuthRepository {
 	return &AuthRepository{db: db}
-}
-
-func (r *AuthRepository) FindVolunteer(ctx context.Context, username string) (*model.Volunteer, error) {
-	_, err := r.db.ExecContext(ctx, "SELECT * FROM volunteer WHERE username = $1", username)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return &model.Volunteer{Username: username}, nil
 }
 
 func (r *AuthRepository) CreateUser(ctx context.Context, username, password, email, tableName string) (string, error) {
