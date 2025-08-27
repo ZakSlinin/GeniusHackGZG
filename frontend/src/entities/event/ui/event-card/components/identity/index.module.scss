@@ -1,0 +1,43 @@
+.identity {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  .category {
+    width: max-content;
+    padding: 4px 15px;
+    border-radius: 5px;
+    background-color: var(--gray-color);
+  }
+
+  h3,
+  .description {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.1;
+  }
+
+  h3 {
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: -6px;
+    -webkit-line-clamp: 1;
+    max-height: 1.1em;
+  }
+
+  .organization,
+  .description {
+    color: var(--input-text-color);
+    font-weight: 600;
+  }
+
+  .description {
+    margin-top: 20px;
+    -webkit-line-clamp: 3;
+    max-height: calc(1.1em * 3);
+  }
+}

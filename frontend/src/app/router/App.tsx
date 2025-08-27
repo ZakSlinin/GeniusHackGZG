@@ -1,19 +1,15 @@
-import { Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { Header } from "@/widgets/header";
-import { Input, InputDate, Textarea } from "@/shared/ui/input/";
+import { PRIVATE_PAGES } from "@/shared/config/pages.config";
+import { EventsPage } from "@/pages/events";
 
 export const App = () => {
   return (
     <main>
       <Header />
-      <div style={{ marginTop: 100, padding: 10 }}>
-        <InputDate
-          label="Название мероприятия"
-          required
-          placeholder="Введите название мероприятия"
-        />
-      </div>
-      <Routes></Routes>
+      <Routes>
+        <Route path={PRIVATE_PAGES.HOME} element={<EventsPage />} />
+      </Routes>
     </main>
   );
 };

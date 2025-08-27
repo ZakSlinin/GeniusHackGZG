@@ -1,12 +1,18 @@
 html {
+  // COLORS
   --background: #fff;
   --text-color: #000;
   --gray-color: #d9d9d9;
 
+  --header-bg: #fafafa;
   --input-bg: #f3f3f5;
+  --input-text-color: #454545;
 
   --light-blue: #b9cefb;
   --dark-blue: #777abc;
   --green: #cefbb9;
   --red: #fbb9b9;
+
+  // PARAMS
+  --page-scrollbar-width: 9px;
 }

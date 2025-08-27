@@ -1,0 +1,11 @@
+.eventsPage {
+  position: relative;
+  padding: 6vw;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+
+  @media (max-width: 1480px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

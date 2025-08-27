@@ -1,0 +1,19 @@
+.information {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 700;
+  }
+
+  .date {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+}
