@@ -2,6 +2,7 @@ package model
 
 type Organization struct {
 	ID            int           `json:"id" db:"id"`
+	Username      string        `json:"username" db:"username"`
 	Password      string        `json:"-" db:"password"`
 	Email         string        `json:"email" db:"email"`
 	EventsCreated int           `json:"events_created" db:"events_created"`

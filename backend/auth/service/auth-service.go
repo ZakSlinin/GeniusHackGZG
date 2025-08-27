@@ -44,9 +44,55 @@ func (s *AuthService) CreateVolunteer(ctx context.Context, volunteer model.Volun
 
 	// Генерация JWT
 
-	token, err := GenerateJWT(volunteer)
+	token, err := GenerateJWTForVolunteer(volunteer)
 	if err != nil {
 		return "", err
+	}
+
+	return token, nil
+}
+
+func (s *AuthService) CreateCoordinator(ctx context.Context, coordinator model.Coordinator) (string, error) {
+	// Хеширование пароля
+	hashPassword, err := HashPassword(coordinator.Password)
+	if err != nil {
+		return "", fmt.Errorf("failed to hash password: %w", err)
+	}
+	coordinator.Password = hashPassword
+
+	// Создание пользователя в базе
+	_, err = s.repo.CreateUser(ctx, coordinator.Username, coordinator.Password, coordinator.Email, "coordinators")
+	if err != nil {
+		return "", fmt.Errorf("failed to create coordinator: %w", err)
+	}
+
+	// Генерация JWT
+	token, err := GenerateJWTForCoordinators(coordinator)
+	if err != nil {
+		return "", fmt.Errorf("failed to generate token: %w", err)
+	}
+
+	return token, nil
+}
+
+func (s *AuthService) CreateOrganization(ctx context.Context, organization model.Organization) (string, error) {
+	// Хеширование пароля
+	hashPassword, err := HashPassword(organization.Password)
+	if err != nil {
+		return "", fmt.Errorf("failed to hash password: %w", err)
+	}
+	organization.Password = hashPassword
+
+	// Создание в базе
+	_, err = s.repo.CreateUser(ctx, organization.Username, organization.Password, organization.Email, "organizations")
+	if err != nil {
+		return "", fmt.Errorf("failed to create organization: %w", err)
+	}
+
+	// Генерация JWT для организации
+	token, err := GenerateJWTForOrganization(organization)
+	if err != nil {
+		return "", fmt.Errorf("failed to generate token: %w", err)
 	}
 
 	return token, nil
@@ -187,7 +233,7 @@ func (s *AuthService) validateOrganizationUpdate(organization model.Organization
 
 var jwtSecret = []byte(os.Getenv("JWT_SECRET"))
 
-func GenerateJWT(volunteer model.Volunteer) (string, error) {
+func GenerateJWTForVolunteer(volunteer model.Volunteer) (string, error) {
 	claims := jwt.MapClaims{
 		"username":            volunteer.Username,
 		"email":               volunteer.Email,
@@ -196,6 +242,31 @@ func GenerateJWT(volunteer model.Volunteer) (string, error) {
 		"history_of_activity": volunteer.HistoryOfActivity,
 		"current_activity":    volunteer.CurrentActivity,
 		"exp":                 time.Now().Add(time.Hour * 24).Unix(), // срок жизни в 24 часа
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	return token.SignedString(jwtSecret)
+}
+
+func GenerateJWTForCoordinators(coordinator model.Coordinator) (string, error) {
+	claims := jwt.MapClaims{
+		"username":           coordinator.Username,
+		"email":              coordinator.Email,
+		"events_coordinated": coordinator.EventsCoordinated,
+		"current_coordinate": coordinator.CurrentCoordinate,
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	return token.SignedString(jwtSecret)
+}
+
+func GenerateJWTForOrganization(org model.Organization) (string, error) {
+	claims := jwt.MapClaims{
+		"org_id":   org.ID,
+		"username": org.Username,
+		"email":    org.Email,
+		"exp":      time.Now().Add(time.Hour * 24).Unix(),
+		"iat":      time.Now().Unix(),
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
