@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/ZakSlinin/GeniusHackGZG/auth/model"
 	"github.com/jmoiron/sqlx"
+	"reflect"
 	"strings"
 )
 
@@ -15,23 +16,6 @@ type AuthRepository struct {
 
 func _NewAuthRepository(db *sqlx.DB) *AuthRepository {
 	return &AuthRepository{db: db}
-}
-
-func (r *AuthRepository) CreateVolunteer(ctx context.Context, volunteer model.Volunteer) (string, error) {
-	query := `INSERT INTO volunteer (username, password, email, events_visited, hours_of_help, history_of_activity, current_activity) VALUES ($1, $2, $3, NULL, NULL, NULL, NULL) RETURNING username`
-
-	var username string
-	err := r.db.QueryRowContext(ctx, query,
-		volunteer.Username,
-		volunteer.Password,
-		volunteer.Email,
-	).Scan(&username)
-
-	if err != nil {
-		return "", fmt.Errorf("failed to create volunteer: %w", err)
-	}
-
-	return username, nil
 }
 
 func (r *AuthRepository) FindVolunteer(ctx context.Context, username string) (*model.Volunteer, error) {
@@ -44,79 +28,111 @@ func (r *AuthRepository) FindVolunteer(ctx context.Context, username string) (*m
 	return &model.Volunteer{Username: username}, nil
 }
 
-func (r *AuthRepository) UpdateVolunteer(ctx context.Context, volunteer model.Volunteer) (string, error) {
-	// Determine selector: prefer ID, fallback to Username
-	var whereClause string
-	var whereArgs []interface{}
+func (r *AuthRepository) CreateUser(ctx context.Context, username, password, email, tableName string) (string, error) {
+	var query string
+
+	switch tableName {
+	case "coordinators":
+		query = `INSERT INTO coordinators (username, password, email, events_coordinated, current_coordinate) VALUES ($1, $2, $3, NULL, NULL) RETURNING username`
+	case "volunteer":
+		query = `INSERT INTO volunteer (username, password, email, events_visited, hours_of_help, history_of_activity, current_activity) VALUES ($1, $2, $3, NULL, NULL, NULL, NULL) RETURNING username`
+	case "organization":
+		query = `INSERT INTO organizations (username, password, email, events_created, helpers_count, hours_of_help, events) VALUES ($1, $2, $3, NULL, NULL, NULL, NULL) RETURNING username`
+	default:
+		return "", fmt.Errorf("unknown table: %s", tableName)
+	}
+
+	var createdUsername string
+	err := r.db.QueryRowContext(ctx, query, username, password, email).Scan(&createdUsername)
+
+	if err != nil {
+		return "", fmt.Errorf("failed to create %s: %w", tableName, err)
+	}
+
+	return createdUsername, nil
+}
+
+func (r *AuthRepository) UpdateUser(ctx context.Context, tableName string, model interface{}, where string, whereArgs []interface{}) (string, error) {
+	v := reflect.ValueOf(model)
+	if v.Kind() == reflect.Ptr {
+		v = v.Elem()
+	}
+
+	if v.Kind() != reflect.Struct {
+		return "", fmt.Errorf("model must be a struct")
+	}
+
+	setParts := make([]string, 0)
+	args := make([]interface{}, 0)
 	argIndex := 1
-	if volunteer.ID > 0 {
-		whereClause = fmt.Sprintf("id = $%d", argIndex)
-		whereArgs = append(whereArgs, volunteer.ID)
-		argIndex++
-	} else if volunteer.Username != "" {
-		whereClause = fmt.Sprintf("username = $%d", argIndex)
-		whereArgs = append(whereArgs, volunteer.Username)
-		argIndex++
-	} else {
-		return "", fmt.Errorf("no selector provided: require non-zero id or non-empty username")
-	}
 
-	// Build dynamic SET clause only for provided fields
-	setParts := make([]string, 0, 6)
-	args := make([]interface{}, 0, 6)
+	t := v.Type()
+	for i := 0; i < v.NumField(); i++ {
+		field := v.Field(i)
+		fieldType := t.Field(i)
 
-	if volunteer.Password != "" {
-		setParts = append(setParts, fmt.Sprintf("password = $%d", argIndex))
-		args = append(args, volunteer.Password)
-		argIndex++
-	}
-	if volunteer.Email != "" {
-		setParts = append(setParts, fmt.Sprintf("email = $%d", argIndex))
-		args = append(args, volunteer.Email)
-		argIndex++
-	}
-	if volunteer.EventsVisited != 0 {
-		setParts = append(setParts, fmt.Sprintf("events_visited = $%d", argIndex))
-		args = append(args, volunteer.EventsVisited)
-		argIndex++
-	}
-	if volunteer.HoursOfHelp != 0 {
-		setParts = append(setParts, fmt.Sprintf("hours_of_help = $%d", argIndex))
-		args = append(args, volunteer.HoursOfHelp)
-		argIndex++
-	}
-	if len(volunteer.HistoryOfActivity) > 0 {
-		b, err := json.Marshal(volunteer.HistoryOfActivity)
-		if err != nil {
-			return "", fmt.Errorf("marshal history_of_activity: %w", err)
+		// Пропускаем нулевые/пустые значения
+		if isZero(field.Interface()) {
+			continue
 		}
-		setParts = append(setParts, fmt.Sprintf("history_of_activity = $%d", argIndex))
-		args = append(args, string(b))
-		argIndex++
-	}
-	if len(volunteer.CurrentActivity) > 0 {
-		b, err := json.Marshal(volunteer.CurrentActivity)
-		if err != nil {
-			return "", fmt.Errorf("marshal current_activity: %w", err)
+
+		// Получаение имя колонки из тега или имени поля
+		columnName := getColumnName(fieldType)
+		setParts = append(setParts, fmt.Sprintf("%s = $%d", columnName, argIndex))
+
+		// Обработка JSON поля
+		if needsJSONMarshal(fieldType) {
+			b, err := json.Marshal(field.Interface())
+			if err != nil {
+				return "", fmt.Errorf("marshal %s: %w", columnName, err)
+			}
+			args = append(args, string(b))
+		} else {
+			args = append(args, field.Interface())
 		}
-		setParts = append(setParts, fmt.Sprintf("current_activity = $%d", argIndex))
-		args = append(args, string(b))
 		argIndex++
 	}
 
 	if len(setParts) == 0 {
-		// Nothing to update
-		return "", fmt.Errorf("no fields provided to update")
+		return "", fmt.Errorf("no fields to update")
 	}
 
-	query := "UPDATE volunteer SET " + strings.Join(setParts, ", ") + " WHERE " + whereClause + " RETURNING username"
-	// Order of args: set args first, then where args
+	query := fmt.Sprintf("UPDATE %s SET %s WHERE %s RETURNING username", tableName, strings.Join(setParts, ", "), where)
 	allArgs := append(args, whereArgs...)
 
-	var updatedUsername string
-	if err := r.db.QueryRowContext(ctx, query, allArgs...).Scan(&updatedUsername); err != nil {
-		return "", err
+	var username string
+	err := r.db.QueryRowContext(ctx, query, allArgs...).Scan(&username)
+	if err != nil {
+		return "", fmt.Errorf("failed to update %s: %w", tableName, err)
 	}
 
-	return updatedUsername, nil
+	return username, nil
+}
+
+// Вспомогательные функции
+func isZero(value interface{}) bool {
+	v := reflect.ValueOf(value)
+	switch v.Kind() {
+	case reflect.String:
+		return v.String() == ""
+	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+		return v.Int() == 0
+	case reflect.Slice, reflect.Array, reflect.Map:
+		return v.Len() == 0
+	case reflect.Ptr:
+		return v.IsNil()
+	default:
+		return v.IsZero()
+	}
+}
+
+func getColumnName(field reflect.StructField) string {
+	if tag := field.Tag.Get("db"); tag != "" {
+		return tag
+	}
+	return strings.ToLower(field.Name)
+}
+
+func needsJSONMarshal(field reflect.StructField) bool {
+	return field.Tag.Get("json") != ""
 }
