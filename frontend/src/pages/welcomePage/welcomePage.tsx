@@ -5,14 +5,9 @@ export function WelcomePage() {
     <div>
       <div className={"container"}>
         <div className={"welcomeRow"}>
-          <h1>Стать волонтёром - легко</h1>
+          <h2>Стать волонтёром - легко</h2>
           <div className={"searchBar"}>
             <input placeholder={"Поиск по мероприятиям"} />
-            <span className={"filtersButton"}>
-              <span className={"bar"}></span>
-              <span className={"bar"}></span>
-              <span className={"bar"}></span>
-            </span>
             <button className={"searchButton"}>Найти</button>
           </div>
           <p>Я хочу создать маршрут</p>
