@@ -1,3 +1,4 @@
+import { Button } from "@/shared/ui/button/ui";
 import { EventIdentity } from "./components/identity";
 import { EventInformation } from "./components/information";
 import { EventRoles } from "./components/roles";
@@ -9,6 +10,7 @@ export const EventCard = () => {
       <EventIdentity />
       <EventInformation />
       <EventRoles />
+      <Button>Подробнее</Button>
     </div>
   );
 };
