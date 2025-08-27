@@ -1,60 +1,140 @@
 import "./createEvent.scss";
+import { Input, InputDate, InputTime, Textarea } from "@/shared/ui/input/";
+import * as React from "react";
+import { useState } from "react";
+import type { VolunteerGroup } from "@/shared/types/volunteerGroup.ts";
+import { TrashBucket } from "@/shared/icons/TrashBucket.tsx";
+import { creatingEventAPI } from "@/Processes/CreatingEvent/CreatingEvent.ts";
 
-export function CreateNewEvent() {
+export const CreateNewEvent = () => {
+  const { CreateNewEvent } = creatingEventAPI;
+
+  const [roles, setRoles] = useState<VolunteerGroup[]>([{
+    name: "",
+    needed: 0,
+    registered: 0,
+    requirements: ""
+  }]);
+
+  const addRole = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (JSON.stringify(roles.at(-1)) !== JSON.stringify({
+      name: "",
+      needed: 0,
+      registered: 0,
+      requirements: ""
+    })) {
+      setRoles([...roles, {
+        name: "",
+        needed: 0,
+        registered: 0,
+        requirements: ""
+      }]);
+    }
+  };
+
+  const editRole = (index: number, roleObject: string, textValue: string) => {
+    setRoles(prevRoles => {
+      const newRoles = [...prevRoles];
+      newRoles[index] = {
+        ...newRoles[index],
+        [roleObject]: textValue
+      };
+      return newRoles;
+    });
+  };
+
+  const deleteRole = (index: number) => {
+    setRoles(prevRoles => {
+      const newRoles = [...prevRoles];
+      newRoles.splice(index, 1);
+      return newRoles;
+    });
+  };
+
+  const createEvent = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (roles[0]["name"] === "") return;
+
+    /**
+     * Сделать, что допуск, только если все requrenments выполнены
+     */
+
+    const basicBlock = e.target.querySelector(".basicInfo");
+    const basicInputs = basicBlock.querySelectorAll("input");
+    const basicTextarea = basicBlock.querySelector("textarea");
+    const contactInputs = e.target.querySelector(".contactInfo").querySelectorAll("input");
+
+    CreateNewEvent(basicInputs, basicTextarea, contactInputs, roles);
+  };
+
   return (
     <div>
-      <form className={"container"}>
-        <span className={'title'}>
+      <form onSubmit={e => createEvent(e)} className={"container"}>
+        <span className={"title"}>
           <h1>Создать новое мероприятие</h1>
         </span>
-        <div className={'basicInfo'}>
+        <div className={"basicInfo"}>
           <h2>Основная информация</h2>
           <span>
-            <label>Название мероприятия
-            <input placeholder={"Введите адрес электронной почты"} />
-            </label>
-
-            <label>Категория
-            <input placeholder={"Введите название категории"} />
-            </label>
+            <Input label={"Название мероприятия"} required placeholder={"Введите адрес электронной почты"} />
+            <Input label={"Категория"} placeholder={"Введите название категории"} />
           </span>
 
-          <label>Краткое описание*
-          <input placeholder={"Введите краткое описание"} />
-          </label>
+          <Input label={"Краткое описание"} required placeholder={"Введите краткое описание"} />
 
-
-          <label>Описание*
-          <textarea cols={1} rows={3} placeholder={"Введите описание"} />
-          </label>
+          <Textarea label={"Описание"} placeholder={"Введите описание"} />
 
           <span>
-            <label>Дата проведения*
-            <input type="date" placeholder={"дд.нн.гггг"} />
-            </label>
+            <InputDate label={"Дата проведения"} required placeholder={"дд.нн.гггг"} />
 
-            <label>Время
-            <input type="time" placeholder={"10:00 - 16:00"} />
-            </label>
+            <InputTime label={"Время начала"} placeholder={"10:00"} />
 
-            <label>Место проведения*
-            <input placeholder={"Адрес или место"} />
-            </label>
+            <InputTime label={"Время конца"} placeholder={"12:00"} />
+
+            <InputDate label={"Место проведения"} placeholder={"Адрес или место"} />
           </span>
         </div>
-        <div className={'contactInfo'}>
+        <div className={"contactInfo"}>
           <h2>Контактная информация</h2>
           <span>
-            <label>Email координатора
-            <input placeholder={"Введите краткое описание"} />
-            </label>
-
-            <label>Номер телефона для связи
-            <input type={'tel'} />
-            </label>
+            <Input label={"Email координатора"} required placeholder={"Введите электронную почту координатора"} />
+            <Input label={"Номер телефона"} required placeholder={"+7 ... ... .. .."} />
+          </span>
+          <span>
+            <Input label={"Email организатора"} required placeholder={"Введите электронную почту организатора"} />
+            <Input label={"Telegram организатора"} required placeholder={"@"} />
           </span>
         </div>
+        <div className={"rolesOfVolunteers"}>
+          <span className={"informationBar"}>
+            <h2>Роли волонтёров</h2>
+            <button className={"addRoleButton"} onClick={addRole}>Добавить роль</button>
+          </span>
+          {
+            roles.map((_, i) => (
+              <div className={"newRouteContainer"}>
+                <span>
+                  <Input onChange={e => editRole(i, "name", e.target.value)} required label={"Название роли"}
+                         placeholder={"Введите название роли"} />
+
+                  <Input onChange={e => editRole(i, "needed", e.target.value)} required label={"Количество человек"}
+                         type={"number"} placeholder={"1"} />
+                  <div onClick={() => deleteRole(i)} className={"deleteRoleButton"}>
+                    <TrashBucket />
+                  </div>
+                </span>
+
+                <Textarea label={"Описание обязанностей"} required placeholder={"Опишите обязанности волонтёров"} />
+              </div>
+            ))
+          }
+        </div>
+
+        <button type={"submit"} className={"submitButton"}>Создать</button>
       </form>
     </div>
   );
-}
+};
