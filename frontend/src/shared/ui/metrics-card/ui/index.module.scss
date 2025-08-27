@@ -1,0 +1,44 @@
+.metricsCard {
+  position: relative;
+  width: 100%;
+  padding: 15px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+
+  svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  .column {
+    display: flex;
+    flex-direction: column;
+
+    p:first-child {
+      font-size: 24px;
+      font-weight: 800;
+    }
+
+    p {
+      font-size: 13px;
+    }
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    p:first-child {
+      font-size: 20px;
+    }
+
+    p {
+      font-size: 18px;
+      font-weight: 800;
+    }
+  }
+}
