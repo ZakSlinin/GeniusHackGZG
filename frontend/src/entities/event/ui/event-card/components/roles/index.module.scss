@@ -1,0 +1,43 @@
+.roles {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  .list {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    li {
+      padding: 4px 10px;
+      border: 1px solid var(--text-color);
+      border-radius: 10px;
+      font-size: 13px;
+      cursor: default;
+      transition: all 0.2s;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 120px;
+
+      strong {
+        font-weight: 600;
+      }
+
+      &:hover {
+        margin-top: -3px;
+        -webkit-box-shadow: 0px 5px 6px 0px rgba(34, 60, 80, 0.2);
+        -moz-box-shadow: 0px 5px 6px 0px rgba(34, 60, 80, 0.2);
+        box-shadow: 0px 5px 6px 0px rgba(34, 60, 80, 0.2);
+      }
+    }
+
+    @media (max-width: 390px) {
+      height: 110px;
+    }
+  }
+}

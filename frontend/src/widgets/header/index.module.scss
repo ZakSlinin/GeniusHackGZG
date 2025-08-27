@@ -2,10 +2,11 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: calc(100vw - var(--page-scrollbar-width));
   height: 50px;
   padding: 15px;
-  background-color: var(--gray-color);
+  background-color: var(--header-bg);
+  z-index: 100;
 
   nav {
     position: relative;
@@ -17,9 +18,14 @@
       padding: 10px;
       gap: 8px;
       border-radius: 10px;
+      transition: all 0.1s;
 
       * {
         color: var(--text-color);
+      }
+
+      &:hover {
+        background-color: var(--input-bg);
       }
 
       &.active {

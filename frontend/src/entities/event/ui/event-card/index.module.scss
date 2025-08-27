@@ -1,0 +1,11 @@
+.event {
+  position: relative;
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  border: 2px solid var(--gray-color);
+  border-radius: 10px;
+}
