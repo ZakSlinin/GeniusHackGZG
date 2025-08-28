@@ -1,16 +1,19 @@
 package main
 
 import (
-	"github.com/ZakSlinin/GeniusHackGZG/auth/middleware"
-	handler2 "github.com/ZakSlinin/GeniusHackGZG/event/handler"
-	repository2 "github.com/ZakSlinin/GeniusHackGZG/event/repository"
-	service2 "github.com/ZakSlinin/GeniusHackGZG/event/service"
 	"log"
 	"os"
 
 	"github.com/ZakSlinin/GeniusHackGZG/auth/handler"
+	"github.com/ZakSlinin/GeniusHackGZG/auth/middleware"
 	"github.com/ZakSlinin/GeniusHackGZG/auth/repository"
 	"github.com/ZakSlinin/GeniusHackGZG/auth/service"
+
+	handler2 "github.com/ZakSlinin/GeniusHackGZG/event/handler"
+	repository2 "github.com/ZakSlinin/GeniusHackGZG/event/repository"
+	service2 "github.com/ZakSlinin/GeniusHackGZG/event/service"
+
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/jmoiron/sqlx"
@@ -35,6 +38,18 @@ func main() {
 	eventHandler := handler2.NewEventHandler(eventService)
 
 	r := gin.Default()
+
+	// --- Настройка CORS ---
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"http://localhost:5173"}
+	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
+	config.AllowHeaders = []string{"Origin", "Content-Type", "Accept", "Authorization"}
+	config.AllowCredentials = true
+	config.MaxAge = 300
+
+	// Применяем CORS мидлвар к нашему роутеру
+	r.Use(cors.New(config))
+	// --- Конец настройки CORS ---
 
 	auth := r.Group("/update")
 	auth.Use(middleware.JWTAuthMiddleware)
