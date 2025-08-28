@@ -5,25 +5,39 @@ import { Clock } from "@/shared/icons/Clock";
 import { MapPin } from "@/shared/icons/MapPin";
 import { User } from "@/shared/icons/User";
 
-export const EventInformation = () => {
+export const EventInformation = ({
+                                   date,
+                                   timeStart,
+                                   timeEnd,
+                                   location,
+                                   volunteerCount,
+                                   volunteerNeedCount
+                                 }: {
+  date: Date;
+  timeStart: string;
+  timeEnd: string;
+  location: string;
+  volunteerCount: number;
+  volunteerNeedCount: number;
+}) => {
   return (
     <div className={`${s.information}`}>
       <div className={s.date}>
         <span>
-          <Calendar /> 27 августа 2025
+          <Calendar /> {date.toLocaleDateString("ru-RU")}
         </span>
         <span>
           <Clock />
-          {"10:00"} - {"16:00"}
+          {timeStart} - {timeEnd}
         </span>
       </div>
       <span>
         <MapPin />
-        JDFLAG, ул. FLAГSTRИК
+        {location}
       </span>
       <span>
         <User />
-        10000 из 8500
+        {volunteerCount} из {volunteerNeedCount}
       </span>
     </div>
   );

@@ -1,12 +1,12 @@
 import s from "./index.module.scss";
 import { useMobile } from "@/shared/hooks/useMobile.ts";
+import type { IvolunteerGroup } from "@/shared/interfaces/IvolunteerGroup.tsx";
 
-const data = Array.from({ length: 10 }, () => "Роль а (10/10)");
 
-export const EventRoles = () => {
+export const EventRoles = ({ volunteerGroups }: { volunteerGroups: IvolunteerGroup[] }) => {
   const maxVisibleRoles = useMobile() ? 2 : 4;
-  const visibleRoles = data.slice(0, maxVisibleRoles);
-  const hiddenRolesCount = data.length - maxVisibleRoles;
+  const visibleRoles = volunteerGroups.slice(0, maxVisibleRoles);
+  const hiddenRolesCount = volunteerGroups.length - maxVisibleRoles;
 
   return (
     <div className={`${s.roles}`}>
@@ -14,7 +14,7 @@ export const EventRoles = () => {
       <ul className={s.list}>
         {visibleRoles.map((role, id) => (
           <li key={id}>
-            <strong>{role}</strong>
+            <strong>{role.name} ({role.registered}/{role.needed})</strong>
           </li>
         ))}
         {hiddenRolesCount > 0 && (

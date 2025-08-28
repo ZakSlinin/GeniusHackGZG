@@ -1,16 +1,22 @@
 import s from "./index.module.scss";
 
-export const EventIdentity = () => {
+export const EventIdentity = ({
+                                category,
+                                name,
+                                organization,
+                                description
+                              }: {
+  category: string;
+  name: string;
+  organization: string;
+  description: string;
+}) => {
   return (
     <div className={s.identity}>
-      <strong className={s.category}>Экология</strong>
-      <h3>Помощь растениям на планете Марс приспособиться к Земле</h3>
-      <p className={s.organization}>Имя организации</p>
-      <p className={s.description}>
-        Краткое описание для всей идеи Краткое описание для всей идеи Краткое
-        описание для всей идеи Краткое описание для всей идеи Краткое описание
-        для всей идеи
-      </p>
+      <strong className={s.category}>{category}</strong>
+      <h3>{name}</h3>
+      <p className={s.organization}>{organization}</p>
+      <p className={s.description}>{description}</p>
     </div>
   );
 };

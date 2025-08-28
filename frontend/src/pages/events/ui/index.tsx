@@ -1,15 +1,52 @@
-import { lazy, useState } from "react";
+import { lazy, useEffect, useState } from "react";
 import s from "./index.module.scss";
 
 import { EventCard } from "@/entities/event/ui/event-card";
 import { SlidersHorizontal } from "lucide-react";
 import { FilterModalContent } from "./components/filter-modal-content";
 import { SearchInput } from "./components/search-input";
+import type { Ievent } from "@/shared/interfaces/Ievent.tsx";
+import axios from "axios";
 
 const Modal = lazy(() => import("@/shared/ui/modal/"));
 
 export const EventsPage = () => {
   const [isFilterOpened, setIsFilterOpened] = useState(false);
+  const [events, setEvents] = useState<Ievent[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get<Ievent[]>("http://localhost:8080/get-all-events");
+
+        const eventsWithParsedDates = response.data.map(event => ({
+          ...event,
+          date: new Date(event.date)
+        }));
+
+        setEvents(eventsWithParsedDates);
+        setError(null);
+      } catch (err) {
+        console.error("Ошибка при загрузке событий:", err);
+        // setError("Не удалось загрузить события");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  if (loading) {
+    return <div className={s.loading}>Загрузка событий...</div>;
+  }
+
+  if (error) {
+    return <div className={s.error}>{error}</div>;
+  }
 
   return (
     <>
@@ -30,9 +67,9 @@ export const EventsPage = () => {
         </div>
 
         <ul className={s.eventsList}>
-          {Array.from({ length: 20 }, () => (
-            <li>
-              <EventCard />
+          {events.map((event, index) => (
+            <li key={index}>
+              <EventCard event={event} />
             </li>
           ))}
         </ul>
