@@ -1,6 +1,6 @@
-import { Bar } from "../../scoreBar/bar";
 import s from "./roleBox.module.scss";
 import type { IvolunteerGroup } from "@/shared/interfaces/IvolunteerGroup.tsx";
+import { Bar } from "@/shared/ui/scoreBar";
 
 
 export const RoleBox = ({ name, needed, registered }: IvolunteerGroup) => {
