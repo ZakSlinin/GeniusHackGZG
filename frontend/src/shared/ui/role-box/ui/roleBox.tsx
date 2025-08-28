@@ -1,5 +1,5 @@
 import { Bar } from "../../scoreBar/bar";
-import s from "./roleBox.module.css";
+import s from "./roleBox.module.scss";
 import type { IvolunteerGroup } from "@/shared/interfaces/IvolunteerGroup.tsx";
 
 /**
