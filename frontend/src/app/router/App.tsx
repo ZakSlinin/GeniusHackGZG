@@ -9,6 +9,8 @@ import { CreateNewEvent } from "@/pages/create/index";
 import { PRIVATE_PAGES } from "@/shared/config/pages.config";
 import { Registration } from "@/pages/registration";
 import { SignIn } from "@/pages/signIn";
+import { ProfilePage } from "@/pages/ProfilePage/ui/ProfilePage";
+import { EventCoordinationPage } from "@/pages/EventCoordinationPage";
 
 export const App = () => {
   return (
@@ -20,6 +22,10 @@ export const App = () => {
           <Route path={PRIVATE_PAGES.REGISTER} element={<Registration />} />
           <Route path={PRIVATE_PAGES.LOGIN} element={<SignIn />} />
           <Route path={PRIVATE_PAGES.NEW_EVENT} element={<CreateNewEvent />} />
+          <Route path={PRIVATE_PAGES.PROFILE} element={<ProfilePage />} />
+          <Route path={PRIVATE_PAGES.COORDINATION} element={<EventCoordinationPage />} />
+
+
           <Route
             path={PRIVATE_PAGES.EVENT}
             element={
