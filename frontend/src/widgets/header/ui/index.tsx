@@ -1,7 +1,8 @@
 import { Logout } from "@/shared/icons/Logout";
 import { Link, useLocation, matchPath } from "react-router-dom";
 import s from "./index.module.scss";
-import { buildLinksByRole } from "./model/constants";
+import { buildLinksByRole } from "../model/constants";
+import { HeaderLink } from "./components/link";
 
 export const Header = () => {
   const { pathname } = useLocation();
@@ -18,17 +19,9 @@ export const Header = () => {
               (pathname.startsWith("/events/") && pathname !== "/events/new")
             : matchPath({ path: item.path, end: true }, pathname);
 
-          return (
-            <Link
-              key={item.title}
-              to={item.path}
-              className={`${s.link} ${isActive ? s.active : ""} df aic`}
-            >
-              {item.icon}
-              <strong>{item.title}</strong>
-            </Link>
-          );
+          return <HeaderLink item={item} isActive={isActive} key={item.path} />;
         })}
+
         <button className={`${s.posabs_btn} df aic jcc`}>
           <Logout />
         </button>
