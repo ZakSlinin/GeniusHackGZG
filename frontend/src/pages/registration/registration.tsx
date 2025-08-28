@@ -34,12 +34,12 @@ export const Registration = () => {
                  placeholder={"Введите адрес электронной почты"} />
 
           <BarSelector onChange={(val) => onBarChange(val)} values={["Волонтёр", "Координатор", "Организатор"]} />
-          <BarSelector
-            values={["йцуйцу", "123", "Организqweqweатор"]}
-            onChange={(val) => console.log("Выбрано:", val)}
-            className="myBar"
-            fontSize={10}     // размер текста
-          />
+          {/*<BarSelector*/}
+          {/*  values={["йцуйцу", "123", "Организqweqweатор"]}*/}
+          {/*  onChange={(val) => console.log("Выбрано:", val)}   */}
+          {/*  className="myBar"*/}
+          {/*  fontSize={10}*/}
+          {/*/>*/}
 
           <button className={s.signUpButton}>Зарегистрироваться</button>
           <p>Есть аккаунт? <a>Войти</a></p>
