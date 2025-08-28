@@ -15,44 +15,59 @@
     gap: 10px;
     justify-content: space-evenly;
 
-      .links {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
+    .links {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      gap: 10px;
 
-        .link {
-          padding: 10px;
-          gap: 10px;
-          border-radius: 10px;
-          transition: all 0.1s;
+      .link {
+        padding: 10px;
+        gap: 10px;
+        border-radius: 10px;
+        transition: all 0.1s;
+
+        * {
+          color: var(--text-color);
+        }
+
+        &:hover {
+          background-color: var(--input-bg);
+        }
+
+        &.active {
+          background-color: var(--text-color);
 
           * {
-            color: var(--text-color);
-          }
-
-          &:hover {
-            background-color: var(--input-bg);
-          }
-
-          &.active {
-            background-color: var(--text-color);
-
-            * {
-              color: var(--background);
-            }
+            color: var(--background);
           }
         }
       }
-
-      .buttons {
-        justify-self: flex-end;
-        .posabs_btn {
-          justify-self: flex-end;
-        }
-      }
-
     }
+
+    .buttons {
+      justify-self: flex-end;
+
+      .posabs_btn {
+        display: flex;
+        justify-self: flex-end;
+
+        span {
+          display: flex;
+          gap: 10px;
+          font-size: 14px;
+
+          a {
+            text-decoration: none;
+            color: var(--dark-blue);
+            font-weight: 700;
+          }
+        }
+      }
+    }
+
+  }
 
   .burger {
     width: 100%;
@@ -60,11 +75,12 @@
     z-index: 1000;
 
     .burger_btn {
-      width: 100%;
-      justify-content: flex-end;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9;
+
       p {
-        position: fixed;
-        top: 20px;
         z-index: 999;
         color: white;
         font-size: 20px;
@@ -101,7 +117,6 @@
     }
 
     .posabs_btn {
-      filter: invert(1);
       gap: 10px;
     }
 
@@ -113,6 +128,26 @@
 
       * {
         color: var(--background);
+      }
+    }
+
+    .posabs_btn {
+      display: flex;
+
+      span {
+        display: flex;
+        gap: 10px;
+        color: #ffffff;
+
+        a {
+          text-decoration: none;
+          color: #ffffff;
+        }
+
+      }
+
+      .invertDiv {
+        filter: invert(1);
       }
     }
   }

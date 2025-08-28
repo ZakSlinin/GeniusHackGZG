@@ -10,13 +10,18 @@ export const Header = () => {
   const role = "organization";
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const isMobile = useMobile();
+  const [isLogin] = useState<boolean>(false);
 
   const toggleMenu = () => {
     setIsMenuOpen((value) => !value);
   };
 
   return (
-    <header className={`${s.header} df aic jcc`}>
+    <header style={
+      {
+        background: `${isMobile ? "transparent" : "var(--header-bg)"}`
+      }
+    } className={`${s.header} df aic jcc`}>
       {isMobile ? (
         <div className={s.burger}>
           <button
@@ -26,26 +31,38 @@ export const Header = () => {
           >
             <p className={s.burger_icon}>{isMenuOpen ? "✕" : "☰"}</p>
           </button>
-            <nav className={`${s.mobile_nav} ${isMenuOpen ? s.open : ''} df fdc aic`}>
-              {buildLinksByRole(role).map((item) => {
-                const isActive = matchPath({ path: item.path, end: true }, pathname);
-                return (
-                  <Link
-                    key={item.title}
-                    to={item.path}
-                    className={`${s.link} ${isActive ? s.active : ""} df aic`}
-                    onClick={toggleMenu}
-                  >
-                    {item.icon}
-                    <strong>{item.title}</strong>
-                  </Link>
-                );
-              })}
-              <button className={`${s.posabs_btn} df aic jcc`} onClick={toggleMenu}>
-                <Logout />
-                <strong>Выход</strong>
-              </button>
-            </nav>
+          <nav className={`${s.mobile_nav} ${isMenuOpen ? s.open : ""} df fdc aic`}>
+            {buildLinksByRole(role).map((item) => {
+              const isActive = matchPath({ path: item.path, end: true }, pathname);
+              return (
+                <Link
+                  key={item.title}
+                  to={item.path}
+                  className={`${s.link} ${isActive ? s.active : ""} df aic`}
+                  onClick={toggleMenu}
+                >
+                  {item.icon}
+                  <strong>{item.title}</strong>
+                </Link>
+              );
+            })}
+            <button className={`${s.posabs_btn} df aic jcc`} onClick={toggleMenu}>
+              {isLogin ? (
+                  <div className={"invertDiv"}>
+                    <Logout />
+                    <strong>Выход</strong>
+                  </div>
+                ) :
+                <>
+                  <span>
+                    <a href={"/sign-in"}>Войти</a>
+                    <p>или</p>
+                    <a href={"/registration"}>Зарегистрироваться</a>
+                  </span>
+                </>
+              }
+            </button>
+          </nav>
         </div>
       ) : (
         <nav className={`${s.desktop_nav} df aic jcc`}>
@@ -66,7 +83,19 @@ export const Header = () => {
           </span>
           <span className={s.buttons}>
             <button className={`${s.posabs_btn} df aic jcc`}>
-              <Logout />
+              {isLogin ? (
+                  <>
+                    <Logout />
+                  </>
+                ) :
+                <>
+                  <span>
+                    <a href={"/sign-in"}>Войти</a>
+                    <p>или</p>
+                    <a href={"/registration"}>Зарегистрироваться</a>
+                  </span>
+                </>
+              }
             </button>
           </span>
         </nav>
