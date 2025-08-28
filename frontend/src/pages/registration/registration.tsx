@@ -23,7 +23,7 @@ export const Registration = () => {
   return (
     <div className={s.body}>
       <div className={s.container}>
-        <h1>Вход</h1>
+        <h1>Регистрация</h1>
         <form>
 
           <Input label={"Имя пользователя"} value={registrationForm.name} onChange={handleRegistrationFormChange}
@@ -42,7 +42,7 @@ export const Registration = () => {
           {/*/>*/}
 
           <button className={s.signUpButton}>Зарегистрироваться</button>
-          <p>Есть аккаунт? <a>Войти</a></p>
+          <p>Есть аккаунт? <a href={'/sign-in'}>Войти</a></p>
         </form>
       </div>
     </div>

@@ -4,4 +4,6 @@ export const PRIVATE_PAGES = {
   NEW_EVENT: "/events/new",
   EVENT: "/events/:id",
   COORDINATION: "/coordination",
+  REGISTRATION: "/registration",
+  SIGN_IN: "/sign-in",
 };
