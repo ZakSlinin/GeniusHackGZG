@@ -1,28 +1,35 @@
-import { User, MapPin} from 'lucide-react';
 import s from './ProfilePage.module.scss';
 import { Link } from 'react-router-dom';
-import { Email } from '@/shared/icons/Email';
+import { observer } from 'mobx-react-lite';
+import { ProfileStore } from '@/shared/store/profile-store';
+import { useEffect } from 'react';
+import type { UserProfile } from '@/shared/types/user';
+import { MapPin, User } from 'lucide-react';
+import { Email } from '@/shared/icons';
 
-interface UserProfile {
-  UserID: number;
-  Username: string;
-  Email: string;
-  EventsCoordinated: number;
-  CurrentCoordinate: number[];
-}
+const profileStore = new ProfileStore();
 
-export const ProfilePage = () => {
-  const userProfile: UserProfile = {
-    UserID: 12,
-    Username: "ivan",
-    Email: "ivan@mail.ru",
-    EventsCoordinated: 2,
-    CurrentCoordinate: [1, 5]
-  };
+export const ProfilePage = observer(() => {
+  useEffect(() => {
+    profileStore.fetchProfileData();
+  }, []);
+
+  const userProfile = profileStore.ProfileData?.value as UserProfile;
+
+  if (profileStore.ProfileData?.state === "pending") {
+    return <div>Загрузка профиля...</div>;
+  }
+
+  if (profileStore.ProfileData?.state === "rejected") {
+    return <div>Ошибка загрузки профиля.</div>;
+  }
+
+  if (!userProfile) {
+    return <div>Данные профиля отсутствуют.</div>;
+  }
 
   return (
     <div className={s.container}>
-
       <div className={s.mainContent}>
         <div className={s.grid}>
           {/* Profile Sidebar */}
@@ -42,7 +49,7 @@ export const ProfilePage = () => {
               
               <div className={s.profileDetails}>
                 <div className={s.profileItem}>
-                  <Email/>
+                  <Email />
                   <span>{userProfile.Email}</span>
                 </div>
                 <div className={s.profileItem}>
@@ -80,6 +87,5 @@ export const ProfilePage = () => {
           </div>
         </div>
       </div>
-
   );
-}; 
+}); 
