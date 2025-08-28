@@ -1,0 +1,310 @@
+
+.container {
+  min-height: 100vh;
+  background: var(--background);
+  margin-top: 50px;
+}
+
+
+
+.mainContent {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.pageTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-color);
+  margin: 0 0 2rem 0;
+}
+
+.statusCards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.statusCard {
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+  
+  &.statusCardBlue {
+    background: #3b82f6;
+  }
+  
+  &.statusCardLightBlue {
+    background: #60a5fa;
+  }
+  
+  &.statusCardGreen {
+    background: #10b981;
+  }
+  
+  &.statusCardRed {
+    background: #ef4444;
+  }
+}
+
+.cardIcon {
+  height: 2rem;
+  width: 2rem;
+}
+
+.cardText {
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.eventDetails {
+  background: #f8f9fa;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.eventHeader {
+  margin-bottom: 1rem;
+}
+
+.eventLabel {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--gray-color);
+  margin-bottom: 0.5rem;
+}
+
+.eventName {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.eventInfo {
+  display: flex;
+  gap: 2rem;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+.eventInfoItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--gray-color);
+  font-size: 0.875rem;
+}
+
+.eventIcon {
+  height: 1rem;
+  width: 1rem;
+}
+
+.volunteerManagement {
+  margin-bottom: 2rem;
+}
+
+.sectionTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-color);
+  margin: 0 0 1.5rem 0;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--gray-color);
+}
+
+.tab {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--gray-color);
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  
+  &:hover {
+    color: var(--text-color);
+  }
+  
+  &.tabActive {
+    color: var(--text-color);
+    border-bottom-color: var(--dark-blue);
+  }
+}
+
+.volunteerList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.volunteerCard {
+  border: 1px solid var(--gray-color);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.volunteerInfo {
+  flex: 1;
+}
+
+.volunteerName {
+  font-weight: 600;
+  color: var(--text-color);
+  margin: 0 0 0.5rem 0;
+  font-size: 1.125rem;
+}
+
+.volunteerRole {
+  color: var(--gray-color);
+  margin: 0 0 0.25rem 0;
+  font-size: 0.875rem;
+}
+
+.volunteerContacts {
+  color: var(--gray-color);
+  font-size: 0.875rem;
+}
+
+.volunteerActions {
+  display: flex;
+  gap: 0.5rem;
+  
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: stretch;
+  }
+}
+
+.actionButton {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  
+  &:hover {
+    transform: translateY(-1px);
+  }
+  
+  &.actionButtonConfirmed {
+    background: var(--green);
+    color: #15803d;
+    
+    &:hover {
+      background: #22c55e;
+    }
+  }
+  
+  &.actionButtonRejected {
+    background: var(--red);
+    color: #dc2626;
+    
+    &:hover {
+      background: #ef4444;
+    }
+  }
+  
+  &.actionButtonConfirm {
+    background: var(--green);
+    color: #15803d;
+    
+    &:hover {
+      background: #22c55e;
+    }
+  }
+  
+  &.actionButtonReject {
+    background: var(--red);
+    color: #dc2626;
+    
+    &:hover {
+      background: #ef4444;
+    }
+  }
+}
+
+.roleCompletion {
+  margin-bottom: 2rem;
+}
+
+.roleProgress {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.roleItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 0.5rem;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+.roleName {
+  min-width: 120px;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.progressBar {
+  flex: 1;
+  height: 0.5rem;
+  background: var(--gray-color);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--dark-blue);
+  border-radius: 9999px;
+  transition: width 0.3s;
+}
+
+.roleCount {
+  min-width: 60px;
+  text-align: right;
+  font-weight: 600;
+  color: var(--text-color);
+} 

@@ -1,0 +1,1 @@
+export { EventCoordinationPage } from './ui/EventCoordinationPage'; 

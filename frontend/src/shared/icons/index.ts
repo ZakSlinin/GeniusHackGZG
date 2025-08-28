@@ -1,0 +1,15 @@
+export { Calendar } from './Calendar';
+export { Check } from './Check';
+export { Clock } from './Clock';
+export { Cross } from './Cross';
+export { Email } from './Email';
+export { Heart } from './Heart';
+export { Logout } from './Logout';
+export { MapPin } from './MapPin';
+export { Phone } from './Phone';
+export { Plus } from './Plus';
+export { Search } from './Search';
+export { Settings } from './Settings';
+export { Star } from './Star';
+export { User } from './User';
+export { WalkingPerson } from './WalkingPerson'; 
