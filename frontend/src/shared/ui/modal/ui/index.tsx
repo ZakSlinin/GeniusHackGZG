@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import s from "./index.module.scss";
 import type { ModalProps } from "../model/types";
 
@@ -8,16 +8,17 @@ export const Modal = ({
   children,
   className = "",
 }: ModalProps) => {
-  const modalRef = useRef<HTMLDivElement>(null);
+  const [isClosing, setIsClosing] = useState(false);
+  const closeTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        onClose();
+        startClosing();
       }
     };
 
-    if (isOpen) {
+    if (isOpen || isClosing) {
       document.addEventListener("keydown", handleEscape);
       document.body.style.overflow = "hidden";
     }
@@ -26,20 +27,42 @@ export const Modal = ({
       document.removeEventListener("keydown", handleEscape);
       document.body.style.overflow = "unset";
     };
-  }, [isOpen, onClose]);
+  }, [isOpen, isClosing]);
+
+  useEffect(() => {
+    if (isOpen) setIsClosing(false);
+  }, [isOpen]);
 
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
-      onClose();
+      startClosing();
     }
   };
 
-  if (!isOpen) return null;
+  const startClosing = () => {
+    if (isClosing) return;
+    setIsClosing(true);
+    if (closeTimeoutRef.current) {
+      window.clearTimeout(closeTimeoutRef.current);
+    }
+    closeTimeoutRef.current = window.setTimeout(() => {
+      onClose();
+      setIsClosing(false);
+      closeTimeoutRef.current = null;
+    }, 300);
+  };
+
+  if (!isOpen && !isClosing) return null;
 
   return (
-    <div className={s.overlay} onClick={handleBackdropClick}>
-      <div className={`${s.modal} ${className}`} ref={modalRef}>
-        <button className={s.closeButton} onClick={onClose}>
+    <div
+      className={`${s.overlay} ${isClosing ? s.overlayClosing : ""}`}
+      onClick={handleBackdropClick}
+    >
+      <div
+        className={`${s.modal} ${isClosing ? s.modalClosing : ""} ${className}`}
+      >
+        <button className={s.closeButton} onClick={startClosing}>
           ×
         </button>
 

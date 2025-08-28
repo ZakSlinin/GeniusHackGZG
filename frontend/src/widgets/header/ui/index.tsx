@@ -22,7 +22,10 @@ export const Header = () => {
           return <HeaderLink item={item} isActive={isActive} key={item.path} />;
         })}
 
-        <button className={`${s.posabs_btn} df aic jcc`}>
+        <button
+          className={`${s.posabs_btn} df aic jcc`}
+          title="Выход из аккаунта"
+        >
           <Logout />
         </button>
       </nav>

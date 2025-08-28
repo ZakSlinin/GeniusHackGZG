@@ -1,14 +1,19 @@
 import s from "./index.module.scss";
-import { InputDate } from "@/shared/ui/input";
+import { Input, InputDate } from "@/shared/ui/input";
 
 export const FilterModalContent = () => {
   return (
     <>
-      {" "}
-      <h3>Фильтры</h3>
       <ul className={s.content}>
+        <h3>Фильтры</h3>
         <li>
           <span>Дата: </span> <InputDate />
+        </li>
+        <li>
+          <span>Категория: </span> <Input placeholder="Введите название" />
+        </li>
+        <li>
+          <span>Место: </span> <Input placeholder="Введите место" />
         </li>
       </ul>
     </>

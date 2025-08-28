@@ -3,7 +3,7 @@
   top: 0;
   left: 0;
   width: calc(100vw - var(--page-scrollbar-width));
-  height: 50px;
+  height: var(--page-header-height);
   padding: 15px;
   background-color: var(--header-bg);
   z-index: 100;
