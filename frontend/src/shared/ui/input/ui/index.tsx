@@ -6,7 +6,7 @@ interface BaseProps extends BaseFieldProps {
 }
 
 export const BaseField = ({
-  label,
+  label = "",
   required = false,
   className = "",
   children,

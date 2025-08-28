@@ -10,21 +10,23 @@ import s from "./event.module.scss";
 import { Role } from "@/pages/eventPage/role/role.tsx";
 
 export const Event = ({
-                        name,
-                        category,
-                        createdBy,
-                        // Мы храним что? имя? userID? Email?
-                        date,
-                        timeStart,
-                        timeEnd,
-                        volunteerCount,
-                        volunteerNeedCount,
-                        shortDescription,
-                        description,
-                        location,
-                        volunteerGroups,
-                        number, telegramUsername, email
-                      }: Ievent) => {
+  name,
+  category,
+  createdBy,
+  // Мы храним что? имя? userID? Email?
+  date,
+  timeStart,
+  timeEnd,
+  volunteerCount,
+  volunteerNeedCount,
+  shortDescription,
+  description,
+  location,
+  volunteerGroups,
+  number,
+  telegramUsername,
+  email,
+}: Ievent) => {
   return (
     <div className={s.body}>
       <div className={s.container}>
@@ -38,11 +40,19 @@ export const Event = ({
           <span className={s.information}>
             <span>
               <Calendar />
-              <p>{String(date.getDay()) + " " + String(date.getMonth()) + " " + String(date.getFullYear())}</p>
+              <p>
+                {String(date.getDay()) +
+                  " " +
+                  String(date.getMonth()) +
+                  " " +
+                  String(date.getFullYear())}
+              </p>
             </span>
             <span>
               <Clock />
-              <p>{timeStart} - {timeEnd}</p>
+              <p>
+                {timeStart} - {timeEnd}
+              </p>
             </span>
             <span>
               <MapPin />
@@ -50,13 +60,19 @@ export const Event = ({
             </span>
             <span>
               <User />
-              <p>{volunteerCount} из {volunteerNeedCount}</p>
-              <Bar level={volunteerCount / volunteerNeedCount * 100} />
+              <p>
+                {volunteerCount} из {volunteerNeedCount}
+              </p>
+              <Bar level={(volunteerCount / volunteerNeedCount) * 100} />
             </span>
             <span>
               <Phone />
               <p>{number}</p>
-              <p>{telegramUsername !== undefined && telegramUsername !== "" ? "Telegram: " + telegramUsername : ""}</p>
+              <p>
+                {telegramUsername !== undefined && telegramUsername !== ""
+                  ? "Telegram: " + telegramUsername
+                  : ""}
+              </p>
             </span>
             <span>
               <Email />
@@ -65,16 +81,22 @@ export const Event = ({
           </span>
           <span className={s.description}>
             <h3>Описание</h3>
-            <p>{description == "" || description == undefined ? shortDescription : description}</p>
+            <p>
+              {description == "" || description == undefined
+                ? shortDescription
+                : description}
+            </p>
           </span>
         </div>
         <div className={s.roles}>
-          {
-            volunteerGroups.map((item) => (
-              <Role name={item.name} needed={item.needed} registered={item.registered}
-                    requirements={item["requirements"]} />
-            ))
-          }
+          {volunteerGroups.map((item) => (
+            <Role
+              name={item.name}
+              needed={item.needed}
+              registered={item.registered}
+              requirements={item["requirements"]}
+            />
+          ))}
         </div>
       </div>
     </div>
