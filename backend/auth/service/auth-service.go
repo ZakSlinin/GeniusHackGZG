@@ -45,6 +45,16 @@ func (s *AuthService) CreateVolunteer(ctx context.Context, volunteer model.Volun
 	return token, nil
 }
 
+func (s *AuthService) GetUser(ctx context.Context, email, tableName string, userModel interface{}) error {
+	// Вызов репозитория с передачей указателя на структуру
+	err := s.repo.GetUser(ctx, email, tableName, userModel)
+	if err != nil {
+		return fmt.Errorf("failed to get user: %w", err)
+	}
+
+	return nil
+}
+
 func (s *AuthService) CreateCoordinator(ctx context.Context, coordinator model.Coordinator) (string, error) {
 	// Хеширование пароля
 	hashPassword, err := HashPassword(coordinator.Password)
@@ -121,17 +131,14 @@ func (s *AuthService) UpdateVolunteer(ctx context.Context, volunteer model.Volun
 
 // Валидация бизнес-правил
 func (s *AuthService) validateVolunteerUpdate(volunteer model.Volunteer) error {
-	// Проверка, что hours_of_help не отрицательное
-	if volunteer.HoursOfHelp < 0 {
+	if volunteer.HoursOfHelp.Valid && volunteer.HoursOfHelp.Int64 < 0 {
 		return fmt.Errorf("hours_of_help cannot be negative")
 	}
 
-	// Проверка, что events_visited не отрицательное
-	if volunteer.EventsVisited < 0 {
+	if volunteer.EventsVisited.Valid && volunteer.EventsVisited.Int64 < 0 {
 		return fmt.Errorf("events_visited cannot be negative")
 	}
 
-	// Дополнительные бизнес-правила можно добавить здесь
 	return nil
 }
 
@@ -164,16 +171,12 @@ func (s *AuthService) UpdateCoordinator(ctx context.Context, coordinator model.C
 }
 
 func (s *AuthService) validateCoordinatorUpdate(coordinator model.Coordinator) error {
-	// Проверка, что events_coordinated не отрицательное
-	if coordinator.EventsCoordinated < 0 {
+	if coordinator.EventsCoordinated.Valid && coordinator.EventsCoordinated.Int64 < 0 {
 		return fmt.Errorf("events_coordinated cannot be negative")
 	}
 
-	// Дополнительные проверки для координатора
-	if coordinator.Email != "" {
-		if !strings.Contains(coordinator.Email, "@") {
-			return fmt.Errorf("invalid email format")
-		}
+	if coordinator.Email != "" && !strings.Contains(coordinator.Email, "@") {
+		return fmt.Errorf("invalid email format")
 	}
 
 	return nil
@@ -201,24 +204,20 @@ func (s *AuthService) UpdateOrganization(ctx context.Context, organization model
 }
 
 func (s *AuthService) validateOrganizationUpdate(organization model.Organization) error {
-	// Проверка бизнес-правил для организации
-	if organization.EventsCreated < 0 {
+	if organization.EventsCreated.Valid && organization.EventsCreated.Int64 < 0 {
 		return fmt.Errorf("events_created cannot be negative")
 	}
 
-	if organization.HelpersCount < 0 {
+	if organization.HelpersCount.Valid && organization.HelpersCount.Int64 < 0 {
 		return fmt.Errorf("helpers_count cannot be negative")
 	}
 
-	if organization.HoursOfHelp < 0 {
+	if organization.HoursOfHelp.Valid && organization.HoursOfHelp.Int64 < 0 {
 		return fmt.Errorf("hours_of_help cannot be negative")
 	}
 
-	// Проверка email
-	if organization.Email != "" {
-		if !strings.Contains(organization.Email, "@") {
-			return fmt.Errorf("invalid email format")
-		}
+	if organization.Email != "" && !strings.Contains(organization.Email, "@") {
+		return fmt.Errorf("invalid email format")
 	}
 
 	return nil
