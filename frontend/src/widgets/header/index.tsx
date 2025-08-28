@@ -11,7 +11,12 @@ export const Header = () => {
     <header className={`${s.header} df aic jcc`}>
       <nav className="df aic jcc">
         {buildLinksByRole(role).map((item) => {
-          const isActive = matchPath({ path: item.path, end: true }, pathname);
+          const isEventsHome = item.path === "/";
+
+          const isActive = isEventsHome
+            ? pathname === "/" ||
+              (pathname.startsWith("/events/") && pathname !== "/events/new")
+            : matchPath({ path: item.path, end: true }, pathname);
 
           return (
             <Link
