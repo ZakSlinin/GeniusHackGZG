@@ -50,7 +50,7 @@ export const BarSelector = ({
         <button
           key={item}
           type="button"
-          ref={(el) => (itemsRef.current[idx] = el)}
+          ref={(el: HTMLButtonElement | null) => (itemsRef.current[idx] = el)}
           onClick={() => handleClick(item)}
           className={`${s.item} ${selected === item ? s.active : ""}`}
           style={{
