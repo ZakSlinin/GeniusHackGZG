@@ -1,6 +1,10 @@
 package main
 
 import (
+	"github.com/ZakSlinin/GeniusHackGZG/auth/middleware"
+	handler2 "github.com/ZakSlinin/GeniusHackGZG/event/handler"
+	repository2 "github.com/ZakSlinin/GeniusHackGZG/event/repository"
+	service2 "github.com/ZakSlinin/GeniusHackGZG/event/service"
 	"log"
 	"os"
 
@@ -26,7 +30,15 @@ func main() {
 	authService := service.NewAuthService(authRepo)
 	authHandler := handler.NewAuthHandler(authService)
 
+	eventRepo := repository2.NewEventRepository(db)
+	eventService := service2.NewEventService(eventRepo)
+	eventHandler := handler2.NewEventHandler(eventService)
+
 	r := gin.Default()
+
+	auth := r.Group("/update")
+	auth.Use(middleware.JWTAuthMiddleware)
+
 	r.POST("register/organization", authHandler.RegisterOrganization)
 	r.POST("register/volunteer", authHandler.RegisterVolunteer)
 	r.POST("register/coordinators", authHandler.RegisterCoordinators)
@@ -34,6 +46,11 @@ func main() {
 	r.POST("update/volunteer", authHandler.UpdateVolunteer)
 	r.POST("update/coordinators", authHandler.UpdateCoordinator)
 	r.POST("update/organization", authHandler.UpdateOrganization)
+
+	// эндпоинты на эвенты
+	r.POST("create-event", eventHandler.CreateEvent)
+	r.GET("get-all-events", eventHandler.GetAllEvents)
+	r.POST("events/category", eventHandler.GetEventsByCategory)
 
 	port := os.Getenv("PORT")
 	if port == "" {
