@@ -1,0 +1,18 @@
+export const DEFAULT_VALUES = {
+  coordinator: "",
+  createdBy: "",
+  email: "",
+  location: "",
+  number: "",
+  telegramUsername: "",
+  volunteerCount: 0,
+  volunteerGroups: [{ name: "", needed: 0, registered: 0, requirements: "" }],
+  volunteerNeedCount: 0,
+  name: "",
+  category: "",
+  shortDescription: "",
+  description: "",
+  date: new Date(),
+  timeStart: "",
+  timeEnd: "",
+};

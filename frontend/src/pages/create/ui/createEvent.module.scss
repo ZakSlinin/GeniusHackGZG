@@ -20,7 +20,9 @@
     align-self: flex-start;
   }
 
-  .basicInfo, .contactInfo, .rolesOfVolunteers {
+  .basicInfo,
+  .contactInfo,
+  .rolesOfVolunteers {
     display: flex;
     flex-direction: column;
     border: 1px solid var(--gray-color);
@@ -59,6 +61,13 @@
     }
   }
 
+  .rolesOfVolunteers {
+    .informationBar {
+      display: flex;
+      align-items: center;
+    }
+  }
+
   .newRouteContainer {
     display: flex;
     flex-direction: column;
@@ -86,7 +95,8 @@
   }
 
 
-  input, textarea {
+  input,
+  textarea {
     width: 100%;
     padding: 10px;
     border-radius: 12.6px;
