@@ -147,10 +147,12 @@ export const CreateNewEvent = () => {
                   <Input onChange={e => editRole(i, "name", e.target.value)} required label={"Название роли"}
                          placeholder={"Введите название роли"} />
 
-                  <Input onChange={e => editRole(i, "needed", e.target.value)} required label={"Количество человек"}
-                         type={"number"} placeholder={"1"} />
-                  <div onClick={() => deleteRole(i)} className={"deleteRoleButton"}>
-                    <TrashBucket />
+                  <div className={s.combinedInput}>
+                    <Input onChange={e => editRole(i, "needed", e.target.value)} required label={"Количество человек"}
+                           type={"number"} placeholder={"1"} />
+                    <div onClick={() => deleteRole(i)} className={s.deleteRoleButton}>
+                      <TrashBucket />
+                    </div>
                   </div>
                 </span>
 
