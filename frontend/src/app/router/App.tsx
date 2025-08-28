@@ -1,16 +1,18 @@
 import { Route, Routes } from "react-router-dom";
+
 import { Header } from "@/widgets/header";
-import { Event } from "@/pages/eventPage/event.tsx";
+import { PageWrapper } from "./ui/page-wrapper";
+
+import { Event } from "@/pages/eventPage/";
 import { EventsPage } from "@/pages/events";
 import { CreateNewEvent } from "@/pages/create/index";
 import { PRIVATE_PAGES } from "@/shared/config/pages.config";
-import { Registration } from "@/pages/registration/registration";
-import { SignIn } from "@/pages/signIn/signIn";
-import { PageWrapper } from "./ui/page-wrapper";
+import { Registration } from "@/pages/registration";
+import { SignIn } from "@/pages/signIn";
 
 export const App = () => {
   return (
-    <main>
+    <>
       <Header />
       <PageWrapper>
         <Routes>
@@ -53,6 +55,6 @@ export const App = () => {
           />
         </Routes>
       </PageWrapper>
-    </main>
+    </>
   );
 };

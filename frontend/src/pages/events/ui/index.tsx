@@ -2,8 +2,8 @@ import { lazy, useState } from "react";
 import s from "./index.module.scss";
 
 import { EventCard } from "@/entities/event/ui/event-card";
-import { SearchInput } from "./ui/search-input";
-import { FilterModalContent } from "./ui/filter-modal-content";
+import { SearchInput } from "./components/search-input";
+import { FilterModalContent } from "./components/filter-modal-content";
 
 const Modal = lazy(() => import("@/shared/ui/modal/"));
 

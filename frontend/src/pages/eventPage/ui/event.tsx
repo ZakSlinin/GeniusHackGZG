@@ -7,7 +7,7 @@ import { Bar } from "@/shared/ui/scoreBar/";
 import { Phone } from "@/shared/icons/Phone.tsx";
 import { Email } from "@/shared/icons/Email.tsx";
 import s from "./event.module.scss";
-import { Role } from "@/pages/eventPage/role/role.tsx";
+import { Role } from "@/pages/eventPage/ui/components/role/role";
 
 export const Event = ({
   name,
