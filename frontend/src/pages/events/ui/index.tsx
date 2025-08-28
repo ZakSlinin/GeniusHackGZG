@@ -6,7 +6,6 @@ import { SlidersHorizontal } from "lucide-react";
 import { FilterModalContent } from "./components/filter-modal-content";
 import { SearchInput } from "./components/search-input";
 import type { Ievent } from "@/shared/interfaces/Ievent.tsx";
-import axios from "axios";
 
 const Modal = lazy(() => import("@/shared/ui/modal/"));
 
@@ -16,13 +15,23 @@ export const EventsPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const getEventsFromStorage = (): Ievent[] => {
+    try {
+      const stored = localStorage.getItem('events');
+      return stored ? JSON.parse(stored) : [];
+    } catch (error) {
+      console.error('Ошибка при чтении из LocalStorage:', error);
+      return [];
+    }
+  };
+
   useEffect(() => {
-    const fetchEvents = async () => {
+    const fetchEvents = () => {
       try {
         setLoading(true);
-        const response = await axios.get<Ievent[]>("http://localhost:8080/get-all-events");
+        const storedEvents = getEventsFromStorage();
 
-        const eventsWithParsedDates = response.data.map(event => ({
+        const eventsWithParsedDates = storedEvents.map(event => ({
           ...event,
           date: new Date(event.date)
         }));

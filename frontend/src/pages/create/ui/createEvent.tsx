@@ -6,13 +6,30 @@ import { DEFAULT_VALUES as defaultValues } from "../model/constants";
 import { BasicInfoSection } from "./components/BasicInfo.tsx";
 import { ContactInfoSection } from "./components/ContactInfo.tsx";
 import { VolunteerRolesSection } from "./components/VolunteerRoles.tsx";
-import axios from "axios";
 import { authApi } from "@/shared/store/auth.ts";
 
 export const CreateNewEvent = () => {
   const methods = useForm<Ievent>({
     defaultValues,
   });
+
+  const saveEventsToStorage = (events: Ievent[]): void => {
+    try {
+      localStorage.setItem('events', JSON.stringify(events));
+    } catch (error) {
+      console.error('Ошибка при сохранении в LocalStorage:', error);
+    }
+  };
+
+  const getEventsFromStorage = (): Ievent[] => {
+    try {
+      const stored = localStorage.getItem('events');
+      return stored ? JSON.parse(stored) : [];
+    } catch (error) {
+      console.error('Ошибка при чтении из LocalStorage:', error);
+      return [];
+    }
+  };
 
   const createEvent = methods.handleSubmit(async (data) => {
     data.createdBy = authApi.user?.user;
@@ -23,20 +40,28 @@ export const CreateNewEvent = () => {
         0
       ) ?? 0;
 
-    const response = await axios.post(
-      "http://localhost:8080/create-event",
-      data,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const newEvent = {
+      ...data,
+      id: Date.now().toString(),
+      createdAt: new Date().toISOString()
+    };
 
-    console.log("Event created successfully:", response.data);
-    methods.reset();
+    try {
+      const currentEvents = getEventsFromStorage();
 
-    location.href = "/";
+      const updatedEvents = [...currentEvents, newEvent];
+
+      saveEventsToStorage(updatedEvents);
+
+      console.log("Event created successfully:", newEvent);
+      methods.reset();
+
+      // Перенаправляем на главную страницу
+      location.href = "/";
+    } catch (error) {
+      console.error("Ошибка при создании события:", error);
+      // Можно добавить обработку ошибок
+    }
   });
 
   return (
