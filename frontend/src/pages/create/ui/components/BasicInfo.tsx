@@ -56,7 +56,7 @@ export const BasicInfoSection = () => {
           {...register("timeEnd", { required: true })}
         />
 
-        <InputDate
+        <Input
           label={"Место проведения"}
           placeholder={"Адрес или место"}
           {...register("location", { required: true })}

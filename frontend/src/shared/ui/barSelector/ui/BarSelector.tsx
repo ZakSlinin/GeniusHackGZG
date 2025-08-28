@@ -7,62 +7,66 @@ interface BarSelectorProps {
   className?: string;
   fontSize?: number;
   itemWidth?: number;
+  itemHeight?: number;
 }
 
 export const BarSelector = ({
-  values,
-  onChange,
-  className,
-  fontSize,
-  itemWidth,
-}: BarSelectorProps) => {
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [sliderStyle, setSliderStyle] = useState({ left: 0, width: 0 });
+                              values,
+                              onChange,
+                              className,
+                              fontSize,
+                              itemWidth,
+                              itemHeight
+                            }: BarSelectorProps) => {
+  const [selected, setSelected] = useState(values[0]);
+  const [sliderStyle, setSliderStyle] = useState({ left: 0, width: 0, top: 0, height: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
   const itemsRef = useRef<(HTMLButtonElement | null)[]>([]);
 
   useEffect(() => {
+    const index = values.indexOf(selected);
+    const el = itemsRef.current[index];
     const container = containerRef.current;
-    const currentButton = itemsRef.current[selectedIndex];
-
-    if (itemWidth !== undefined) {
-      setSliderStyle({ left: selectedIndex * itemWidth, width: itemWidth });
-      return;
-    }
-
-    if (container && currentButton) {
-      const elRect = currentButton.getBoundingClientRect();
+    if (el && container) {
+      const elRect = el.getBoundingClientRect();
       const containerRect = container.getBoundingClientRect();
+      const isVertical = window.innerWidth <= 768;
       setSliderStyle({
-        left: elRect.left - containerRect.left,
-        width: elRect.width,
+        left: isVertical ? 4 : elRect.left - containerRect.left,
+        width: isVertical ? containerRect.width - 8 : elRect.width,
+        top: isVertical ? elRect.top - containerRect.top : 4,
+        height: isVertical ? elRect.height : containerRect.height - 8
       });
     }
-  }, [selectedIndex, itemWidth, values.length]);
+  }, [selected, values]);
 
-  const handleClick = (index: number) => {
-    setSelectedIndex(index);
-    onChange?.(values[index]);
+  const handleClick = (value: string) => {
+    setSelected(value);
+    onChange?.(value);
   };
 
   return (
     <div className={`${s.container} ${className || ""}`} ref={containerRef}>
       <div
         className={s.slider}
-        style={{ left: sliderStyle.left, width: sliderStyle.width }}
+        style={{
+          left: sliderStyle.left,
+          width: sliderStyle.width,
+          top: sliderStyle.top,
+          height: sliderStyle.height
+        }}
       />
       {values.map((item, idx) => (
         <button
           key={item}
           type="button"
-          ref={(el: HTMLButtonElement | null) => {
-            itemsRef.current[idx] = el;
-          }}
-          onClick={() => handleClick(idx)}
-          className={`${s.item} ${selectedIndex === idx ? s.active : ""}`}
+          ref={(el: HTMLButtonElement | null) => (itemsRef.current[idx] = el)}
+          onClick={() => handleClick(item)}
+          className={`${s.item} ${selected === item ? s.active : ""}`}
           style={{
-            width: itemWidth !== undefined ? `${itemWidth}px` : undefined,
-            fontSize: fontSize ? `${fontSize}px` : undefined,
+            width: itemWidth !== undefined ? `${itemWidth}px` : "auto",
+            height: itemHeight !== undefined ? `${itemHeight}px` : "auto",
+            fontSize: fontSize ? `${fontSize}px` : "inherit"
           }}
         >
           {item}

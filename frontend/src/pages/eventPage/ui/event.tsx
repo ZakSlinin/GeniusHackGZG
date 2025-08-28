@@ -13,7 +13,6 @@ export const Event = ({
   name,
   category,
   createdBy,
-  // Мы храним что? имя? userID? Email?
   date,
   timeStart,
   timeEnd,

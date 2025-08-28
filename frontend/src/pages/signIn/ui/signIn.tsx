@@ -25,7 +25,7 @@ export const SignIn = () => {
                  placeholder={"Введите пароль"} />
 
           <button>Войти</button>
-          <p>Нет аккаунта? <a>Зарегистрироваться</a></p>
+          <p>Нет аккаунта? <a href={'/auth/reg'}>Зарегистрироваться</a></p>
         </form>
       </div>
     </div>
