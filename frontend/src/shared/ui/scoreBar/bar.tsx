@@ -1,13 +1,13 @@
-import './bar.scss'
+import s from "./bar.module.scss";
 
 export const Bar = ({ level }: { level: number }) => {
   return (
-    <div className={"barContainer"}>
+    <div className={s.barContainer}>
       <div style={
         {
-          width: level + "%",
+          width: level + "%"
         }
       } className={"bar"}></div>
     </div>
-  )
-}
+  );
+};

@@ -6,6 +6,8 @@ import { User } from "@/shared/icons/User.tsx";
 import { Bar } from "@/shared/ui/scoreBar/bar.tsx";
 import { Phone } from "@/shared/icons/Phone.tsx";
 import { Email } from "@/shared/icons/Email.tsx";
+import s from "./event.module.scss";
+import { Role } from "@/pages/eventPage/role/role.tsx";
 
 export const Event = ({
                         name,
@@ -23,21 +25,20 @@ export const Event = ({
                         volunteerGroups,
                         number, telegramUsername, email
                       }: Ievent) => {
-
   return (
-    <div className={"body"}>
-      <div className={"container"}>
+    <div className={s.body}>
+      <div className={s.container}>
         <h1>Вернуться к списку</h1>
-        <div className={"basicInfo"}>
-          <span className={"nameAndCategory"}>
+        <div className={s.basicInfo}>
+          <span className={s.nameAndCategory}>
             <h2>{name}</h2>
             <button>{category}</button>
           </span>
           <p>{createdBy}</p>
-          <span className={"information"}>
+          <span className={s.information}>
             <span>
               <Calendar />
-              <p>{String(date)}</p>
+              <p>{String(date.getDay()) + " " + String(date.getMonth()) + " " + String(date.getFullYear())}</p>
             </span>
             <span>
               <Clock />
@@ -62,31 +63,16 @@ export const Event = ({
               <p>{email}</p>
             </span>
           </span>
-          <span className={"description"}>
+          <span className={s.description}>
             <h3>Описание</h3>
             <p>{description == "" || description == undefined ? shortDescription : description}</p>
           </span>
         </div>
-        <div className={"roles"}>
+        <div className={s.roles}>
           {
             volunteerGroups.map((item) => (
-              <span className={"role"}>
-                <span className={"nameAndCount"}>
-                  <p>{item["name"]}</p>
-                  <p>{item["registered"]}/{item["needed"]}</p>
-                </span>
-                <span className={"descriptionAndInteractive"}>
-                  {
-                    item["requirements"] !== undefined ?
-                      <span className={"requirements"}>
-                        <h2>Обязанности</h2>
-                        <p>{item["requirements"]}</p>
-                      </span> : ""
-                  }
-                  <Bar level={item["registered"] / item["needed"] * 100} />
-                  <button>{item["registered"] < item["needed"] ? "Записаться" : "нет мест"}</button>
-                </span>
-              </span>
+              <Role name={item.name} needed={item.needed} registered={item.registered}
+                    requirements={item["requirements"]} />
             ))
           }
         </div>
