@@ -4,6 +4,7 @@ import s from "./index.module.scss";
 import { EventCard } from "@/entities/event/ui/event-card";
 import { SearchInput } from "./components/search-input";
 import { FilterModalContent } from "./components/filter-modal-content";
+import { Filter, Sliders, SlidersHorizontal } from "lucide-react";
 
 const Modal = lazy(() => import("@/shared/ui/modal/"));
 
@@ -24,7 +25,7 @@ export const EventsPage = () => {
             title="Фильтр/Сортировка"
             onClick={() => setIsFilterOpened(true)}
           >
-            FF.
+            <SlidersHorizontal />
           </button>
         </div>
 

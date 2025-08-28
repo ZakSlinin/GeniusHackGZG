@@ -12,14 +12,18 @@
 
   .endElement {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 0px;
+    right: 0px;
     height: 100%;
     padding: 12px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--gray-color);
+    background-color: var(--text-color);
     border-radius: 10px;
+
+    * {
+      color: var(--background);
+    }
   }
 }
