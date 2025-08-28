@@ -35,11 +35,11 @@ func (r *EventRepository) CreateEvent(ctx context.Context, name, category, creat
 	return eventID, nil
 }
 
-func (r *EventRepository) GetEventsByCategory(ctx context.Context, category string) ([]model.Event, error) {
+func (r *EventRepository) GetEventsByCategory(ctx context.Context, category, location string) ([]model.Event, error) {
 	var events []model.Event
-	query := "SELECT * FROM events WHERE category = $1"
-	if err := r.db.SelectContext(ctx, &events, query, category); err != nil {
-		return nil, fmt.Errorf("failed to get events by category %s: %w", category, err)
+	query := "SELECT * FROM events WHERE category = $1 AND location = $2"
+	if err := r.db.SelectContext(ctx, &events, query, category, location); err != nil {
+		return nil, fmt.Errorf("failed to get events by category %s and locate %d: %w", category, err)
 	}
 	return events, nil
 }
