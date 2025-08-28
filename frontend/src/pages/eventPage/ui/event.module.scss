@@ -25,6 +25,7 @@
       flex-direction: column;
       gap: 20px;
 
+
       .nameAndCategory {
         display: flex;
         gap: 20px;
@@ -45,6 +46,17 @@
         display: grid;
         grid-template-columns: 1fr 2fr;
         gap: 10px;
+
+        @media (max-width: 1480px) {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
         span {
           display: flex;
           gap: 10px;
@@ -67,6 +79,14 @@
       grid-template-columns: 1fr 1fr;
       gap: 20px;
       grid-auto-flow: dense;
+
+      @media (max-width: 1480px) {
+        grid-template-columns: 1fr;
+      }
+
+      @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+      }
     }
   }
 }

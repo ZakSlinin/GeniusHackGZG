@@ -51,7 +51,7 @@ export const Registration = () => {
 
           <button className={s.signUpButton}>Зарегистрироваться</button>
           <p>
-            Есть аккаунт? <a>Войти</a>
+            Есть аккаунт? <a href={'/auth/sign-in'}>Войти</a>
           </p>
         </form>
       </div>

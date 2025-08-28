@@ -53,26 +53,28 @@ export const VolunteerRolesSection = () => {
               })}
             />
 
-            <Input
-              required
-              label={"Количество человек"}
-              type={"number"}
-              placeholder={"1"}
-              {...register(`volunteerGroups.${i}.needed` as const, {
-                required: true,
-                valueAsNumber: true,
-                min: 1,
-                max: 10000,
-                validate: (v) => Number.isInteger(v),
-              })}
-            />
-            <button
-              type="button"
-              onClick={() => deleteRole(i)}
-              className={"deleteRoleButton"}
-            >
-              <TrashBucket />
-            </button>
+            <div className={s.combinedInput}>
+              <Input
+                required
+                label={"Количество человек"}
+                type={"number"}
+                placeholder={"1"}
+                {...register(`volunteerGroups.${i}.needed` as const, {
+                  required: true,
+                  valueAsNumber: true,
+                  min: 1,
+                  max: 10000,
+                  validate: (v) => Number.isInteger(v),
+                })}
+              />
+              <button
+                type="button"
+                onClick={() => deleteRole(i)}
+                className={s.deleteRoleButton}
+              >
+                <TrashBucket />
+              </button>
+            </div>
           </span>
 
           <Textarea
