@@ -22,9 +22,16 @@
       display: flex;
       flex-direction: column;
       gap: 5px;
+
       h2 {
         font-weight: 700;
         font-size: 15px;
+      }
+
+      p {
+        -webkit-line-clamp: 5;
+        line-height: 1.1;
+        height: calc(1.1em * 5);
       }
     }
 
