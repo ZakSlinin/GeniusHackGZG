@@ -1,18 +1,23 @@
 package main
 
 import (
+	"log"
+	"os"
+
 	"github.com/ZakSlinin/GeniusHackGZG/auth/handler"
 	"github.com/ZakSlinin/GeniusHackGZG/auth/repository"
 	"github.com/ZakSlinin/GeniusHackGZG/auth/service"
 	"github.com/gin-gonic/gin"
 	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/jmoiron/sqlx"
-	"log"
-	"os"
 )
 
 func main() {
-	db, err := sqlx.Connect("pgx", os.Getenv("postgres://postgres:9082@localhost:5432/genius_hack_db?sslmode=disable"))
+	dsn := os.Getenv("DB_DSN")
+	if dsn == "" {
+		dsn = "postgres://postgres:9082@localhost:5432/genius_hack_db?sslmode=disable"
+	}
+	db, err := sqlx.Connect("pgx", dsn)
 	if err != nil {
 		log.Fatalf("Error connecting to database: %s", err.Error())
 	}
@@ -30,5 +35,9 @@ func main() {
 	r.POST("update/coordinators", authHandler.UpdateCoordinator)
 	r.POST("update/organization", authHandler.UpdateOrganization)
 
-	r.Run(":8080")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	r.Run(":" + port)
 }
