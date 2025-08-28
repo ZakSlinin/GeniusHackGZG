@@ -1,8 +1,8 @@
 import { Logout } from "@/shared/icons/Logout";
-import { Link, useLocation, matchPath } from "react-router-dom";
-import s from "./index.module.scss";
+import { matchPath, useLocation } from "react-router-dom";
 import { buildLinksByRole } from "../model/constants";
 import { HeaderLink } from "./components/link";
+import s from "./index.module.scss";
 
 export const Header = () => {
   const { pathname } = useLocation();
