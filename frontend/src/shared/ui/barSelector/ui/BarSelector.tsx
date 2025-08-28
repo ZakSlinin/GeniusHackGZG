@@ -3,7 +3,6 @@ import s from "./BarSelector.module.scss";
 
 interface BarSelectorProps {
   values: string[];
-  value?: string;
   onChange?: (value: string) => void;
   className?: string;
   fontSize?: number;
@@ -12,7 +11,6 @@ interface BarSelectorProps {
 
 export const BarSelector = ({
   values,
-  value,
   onChange,
   className,
   fontSize,
@@ -22,16 +20,6 @@ export const BarSelector = ({
   const [sliderStyle, setSliderStyle] = useState({ left: 0, width: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
   const itemsRef = useRef<(HTMLButtonElement | null)[]>([]);
-
-  // если value передан → контролируем индекс
-  useEffect(() => {
-    if (value !== undefined) {
-      const idx = values.indexOf(value);
-      if (idx !== -1) {
-        setSelectedIndex(idx);
-      }
-    }
-  }, [value, values]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -53,11 +41,8 @@ export const BarSelector = ({
   }, [selectedIndex, itemWidth, values.length]);
 
   const handleClick = (index: number) => {
-    if (value === undefined) {
-      // uncontrolled режим
-      setSelectedIndex(index);
-    }
-    onChange?.(values[index]); // всегда дергаем onChange
+    setSelectedIndex(index);
+    onChange?.(values[index]);
   };
 
   return (
