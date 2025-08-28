@@ -22,10 +22,8 @@ export const buildLinksByRole = (role: string): LinkT[] => {
         PRIVATE_ROUTES_DEFAULT[2], // Профиль
       ];
     case "coordinator":
-      // With 'Координация' now in PRIVATE_ROUTES_DEFAULT with the WalkingPerson icon,
-      // the coordinator links are the same as the default set.
       return PRIVATE_ROUTES_DEFAULT;
-    default: // This covers 'volunteer' and any other roles
+    default:
       return PRIVATE_ROUTES_DEFAULT;
   }
 };
