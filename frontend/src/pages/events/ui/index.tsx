@@ -2,9 +2,9 @@ import { lazy, useState } from "react";
 import s from "./index.module.scss";
 
 import { EventCard } from "@/entities/event/ui/event-card";
-import { SearchInput } from "./components/search-input";
+import { SlidersHorizontal } from "lucide-react";
 import { FilterModalContent } from "./components/filter-modal-content";
-import { Filter, Sliders, SlidersHorizontal } from "lucide-react";
+import { SearchInput } from "./components/search-input";
 
 const Modal = lazy(() => import("@/shared/ui/modal/"));
 
