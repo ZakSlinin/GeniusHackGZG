@@ -50,7 +50,7 @@ func main() {
 	// эндпоинты на эвенты
 	r.POST("create-event", eventHandler.CreateEvent)
 	r.GET("get-all-events", eventHandler.GetAllEvents)
-	r.POST("events/category", eventHandler.GetEventsByCategory)
+	r.GET("events/category", eventHandler.GetEventsByCategory)
 
 	port := os.Getenv("PORT")
 	if port == "" {

@@ -46,12 +46,13 @@ func (h *EventHandler) GetAllEvents(c *gin.Context) {
 // GET /events/category?category=sport  (по категории)
 func (h *EventHandler) GetEventsByCategory(c *gin.Context) {
 	category := c.Query("category")
+	locate := c.Query("locate")
 	if category == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "category is required"})
 		return
 	}
 
-	events, err := h.service.GetEventsByCategory(c.Request.Context(), category)
+	events, err := h.service.GetEventsByCategory(c.Request.Context(), category, locate)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

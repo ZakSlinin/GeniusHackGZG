@@ -43,8 +43,8 @@ func (s *EventService) CreateEvent(ctx context.Context, event model.Event) (mode
 	return event, nil
 }
 
-func (s *EventService) GetEventsByCategory(ctx context.Context, category string) ([]model.Event, error) {
-	events, err := s.repo.GetEventsByCategory(ctx, category)
+func (s *EventService) GetEventsByCategory(ctx context.Context, category string, locate string) ([]model.Event, error) {
+	events, err := s.repo.GetEventsByCategory(ctx, category, locate)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get events: %w", err)
 	}
