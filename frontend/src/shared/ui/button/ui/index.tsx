@@ -4,6 +4,6 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   btnType?: "outlined"; // UNFINISHED
 }
 
-export const Button = ({ type, children, className = "" }: ButtonProps) => {
+export const Button = ({ children, className = "" }: ButtonProps) => {
   return <button className={`${s.button} ${className}`}>{children}</button>;
 };

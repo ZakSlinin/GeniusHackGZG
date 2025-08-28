@@ -1,5 +1,5 @@
 export interface BaseFieldProps {
-  label: string;
+  label?: string;
   required?: boolean;
   className?: string;
 }

@@ -1,15 +1,34 @@
 .eventsPage {
   position: relative;
   padding: 6vw;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 
-  @media (max-width: 1480px) {
-    grid-template-columns: repeat(2, 1fr);
+  .searchSection {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .filter {
+      padding: 12px;
+      border: 1px solid var(--gray-color);
+      border-radius: 50%;
+      background-color: var(--input-bg);
+    }
   }
 
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
+  .eventsList {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+
+    @media (max-width: 1480px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
   }
 }
