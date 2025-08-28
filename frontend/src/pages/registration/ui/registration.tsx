@@ -1,55 +1,83 @@
 import s from "./registration.module.scss";
 import { Input } from "@/shared/ui/input";
-import { type ChangeEvent, useState } from "react";
 import { BarSelector } from "@/shared/ui/barSelector/";
+import { useForm, Controller } from "react-hook-form";
+import { observer } from "mobx-react-lite";
+import { authApi } from "@/shared/store/auth";
 
-export const Registration = () => {
-  const [registrationForm, setForm] = useState({
-    name: "",
-    email: "",
-    password: "",
-    role: "",
+export type RegisterFormT = {
+  name: string;
+  email: string;
+  password: string;
+  tableName: "Волонтёр" | "Координатор" | "Организатор";
+};
+
+export const Registration = observer(() => {
+  const { register, handleSubmit, control } = useForm<RegisterFormT>({
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      tableName: "Волонтёр",
+    },
   });
 
-  const handleRegistrationFormChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setForm({ ...registrationForm, [name]: value });
-  };
+  const { reg } = authApi;
 
-  const onBarChange = (e: string) => {
-    registrationForm["role"] = e;
+  const onSubmit = (data: RegisterFormT) => {
+    reg(data);
   };
 
   return (
     <div className={s.body}>
       <div className={s.container}>
-        <h1>Вход</h1>
-        <form>
+        <h1>Регистрация</h1>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <Input
-            label={"Имя пользователя"}
-            value={registrationForm.name}
-            onChange={handleRegistrationFormChange}
-            placeholder={"Введите имя пользователя"}
-          />
-          <Input
-            label={"Пароль"}
-            value={registrationForm.password}
-            onChange={handleRegistrationFormChange}
-            placeholder={"Введите пароль"}
-          />
-          <Input
-            label={"Email"}
-            value={registrationForm.email}
-            onChange={handleRegistrationFormChange}
-            placeholder={"Введите адрес электронной почты"}
+            label="Имя пользователя"
+            placeholder="Введите имя пользователя"
+            {...register("name", { required: "Введите имя" })}
           />
 
-          <BarSelector
-            onChange={(val) => onBarChange(val)}
-            values={["Волонтёр", "Координатор", "Организатор"]}
+          <Input
+            label="Пароль"
+            type="password"
+            placeholder="Введите пароль"
+            {...register("password", {
+              required: "Введите пароль",
+              minLength: { value: 6, message: "Минимум 6 символов" },
+            })}
           />
 
-          <button className={s.signUpButton}>Зарегистрироваться</button>
+          <Input
+            label="Email"
+            placeholder="Введите адрес электронной почты"
+            {...register("email", {
+              required: "Введите email",
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: "Неверный формат email",
+              },
+            })}
+          />
+
+          <Controller
+            control={control}
+            name="tableName"
+            rules={{ required: "Выберите роль" }}
+            render={({ field: { onChange, value } }) => (
+              <BarSelector
+                values={["Волонтёр", "Координатор", "Организатор"]}
+                value={value}
+                onChange={onChange}
+              />
+            )}
+          />
+
+          <button type="submit" className={s.signUpButton}>
+            Зарегистрироваться
+          </button>
+
           <p>
             Есть аккаунт? <a href={'/auth/sign-in'}>Войти</a>
           </p>
@@ -57,4 +85,4 @@ export const Registration = () => {
       </div>
     </div>
   );
-};
+});
