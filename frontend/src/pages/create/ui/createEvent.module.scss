@@ -1,9 +1,9 @@
 .container {
+  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  padding: 6vw;
 
   .title {
     width: 80%;
@@ -41,17 +41,7 @@
       display: flex;
       justify-content: space-between;
       gap: 30px;
-
-      @media (max-width: 1480px) {
-        display: flex;
-        flex-direction: column;
-      }
-
-      @media (max-width: 768px) {
-        flex-direction: column;
-      }
     }
-
 
     label {
       display: flex;
@@ -79,13 +69,7 @@
     span {
       display: flex;
       justify-content: center;
-    }
-
-    .combinedInput {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 30px;
+      align-items: flex-end;
 
       .deleteRoleButton {
         height: 40px;
@@ -93,7 +77,6 @@
       }
     }
   }
-
 
   input,
   textarea {
@@ -103,12 +86,8 @@
     background: var(--input-background-color);
   }
 
-  .submitButton {
+  .submitBtn {
     width: 80%;
-    background: black;
-    color: white;
-    padding: 15px 30px;
-    border-radius: 30px;
   }
 
   .addRoleButton {
@@ -123,4 +102,3 @@
     min-height: 70px;
   }
 }
-

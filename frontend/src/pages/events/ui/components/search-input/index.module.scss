@@ -1,0 +1,29 @@
+.inputWrapper {
+  position: relative;
+  width: 100%;
+
+  .input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--gray-color);
+    border-radius: 10px;
+    background-color: var(--input-bg);
+  }
+
+  .endElement {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    height: 100%;
+    padding: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--text-color);
+    border-radius: 10px;
+
+    * {
+      color: var(--background);
+    }
+  }
+}

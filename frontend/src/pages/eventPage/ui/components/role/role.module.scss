@@ -1,0 +1,39 @@
+.role {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid var(--gray-color);
+  border-radius: 16px;
+  padding: 10px 20px;
+  min-height: 130px;
+  gap: 20px;
+
+  .nameAndCount {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .descriptionAndInteractive {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .requirements {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      h2 {
+        font-weight: 700;
+        font-size: 15px;
+      }
+    }
+
+    button {
+      width: 100%;
+      background: black;
+      color: white;
+      padding: 10px;
+      border-radius: 90px;
+    }
+  }
+}

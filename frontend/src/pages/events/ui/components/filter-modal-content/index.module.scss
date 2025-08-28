@@ -1,0 +1,13 @@
+.content {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  h3 {
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: 900;
+  }
+}

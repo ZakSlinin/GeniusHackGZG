@@ -1,0 +1,22 @@
+.link {
+  padding: 10px;
+  gap: 8px;
+  border-radius: 10px;
+  transition: all 0.1s;
+
+  * {
+    color: var(--text-color);
+  }
+
+  &:hover {
+    background-color: var(--input-bg);
+  }
+
+  &.active {
+    background-color: var(--text-color);
+
+    * {
+      color: var(--background);
+    }
+  }
+}
