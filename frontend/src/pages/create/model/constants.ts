@@ -12,7 +12,7 @@ export const DEFAULT_VALUES = {
   category: "",
   shortDescription: "",
   description: "",
-  date: "",
+  date: new Date(),
   timeStart: "",
   timeEnd: "",
 };
