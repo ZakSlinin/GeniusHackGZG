@@ -11,21 +11,27 @@ import { authApi } from "@/shared/store/auth.ts";
 
 export const CreateNewEvent = () => {
   const methods = useForm<Ievent>({
-    defaultValues
+    defaultValues,
   });
 
   const createEvent = methods.handleSubmit(async (data) => {
     data.createdBy = authApi.user?.user;
-    data.volunteerNeedCount = 0
 
-    // TODO
-    //  ТУТ
+    data.volunteerNeedCount =
+      data.volunteerGroups?.reduce(
+        (acc, role) => acc + (Number(role.needed) || 0),
+        0
+      ) ?? 0;
 
-    const response = await axios.post("http://localhost:8080/create-event", data, {
-      headers: {
-        "Content-Type": "application/json"
+    const response = await axios.post(
+      "http://localhost:8080/create-event",
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
-    });
+    );
 
     console.log("Event created successfully:", response.data);
     methods.reset();
