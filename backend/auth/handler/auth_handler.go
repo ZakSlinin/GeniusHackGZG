@@ -1,10 +1,11 @@
 package handler
 
 import (
+	"net/http"
+
 	"github.com/ZakSlinin/GeniusHackGZG/auth/model"
 	"github.com/ZakSlinin/GeniusHackGZG/auth/service"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 type AuthHandler struct {
@@ -78,6 +79,36 @@ func (h *AuthHandler) UpdateVolunteer(c *gin.Context) {
 		"message":  "Volunteer updated successfully",
 		"username": username,
 	})
+}
+
+func (h *AuthHandler) GetUser(c *gin.Context) {
+	email := c.Query("email")
+	table := c.Query("tableName")
+	if email == "" || table == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "email and table query params are required"})
+		return
+	}
+
+	var userModel interface{}
+	switch table {
+	case "coordinator":
+		userModel = &[]model.Coordinator{}
+	case "organization":
+		userModel = &[]model.Organization{}
+	case "volunteer":
+		userModel = &[]model.Volunteer{}
+	default:
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid table name provided"})
+		return
+	}
+
+	err := h.service.GetUser(c.Request.Context(), email, table, userModel)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"user": userModel})
 }
 
 func (h *AuthHandler) UpdateCoordinator(c *gin.Context) {

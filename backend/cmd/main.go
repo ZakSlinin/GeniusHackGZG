@@ -47,10 +47,13 @@ func main() {
 	r.POST("update/coordinators", authHandler.UpdateCoordinator)
 	r.POST("update/organization", authHandler.UpdateOrganization)
 
+	// эндпоинты на получение инфы о юзерах
+	r.GET("get-user", authHandler.GetUser)
+
 	// эндпоинты на эвенты
 	r.POST("create-event", eventHandler.CreateEvent)
 	r.GET("get-all-events", eventHandler.GetAllEvents)
-	r.POST("events/category", eventHandler.GetEventsByCategory)
+	r.GET("events/category", eventHandler.GetEventsByCategory)
 
 	port := os.Getenv("PORT")
 	if port == "" {

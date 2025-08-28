@@ -54,6 +54,20 @@ func (r *AuthRepository) CreateUser(ctx context.Context, username, password, ema
 	return createdUsername, nil
 }
 
+func (r *AuthRepository) GetUser(ctx context.Context, email, tableName string, dest interface{}) error {
+	if tableName == "" || strings.ContainsAny(tableName, ";'\"`") {
+		return fmt.Errorf("invalid table name provided")
+	}
+
+	query := fmt.Sprintf("SELECT * FROM %s WHERE email = $1", tableName)
+
+	if err := r.db.SelectContext(ctx, dest, query, email); err != nil {
+		return fmt.Errorf("failed to get user by email %s from table %s: %w", email, tableName, err)
+	}
+
+	return nil
+}
+
 func (r *AuthRepository) UpdateUser(ctx context.Context, tableName string, model interface{}, where string, whereArgs []interface{}) (string, error) {
 	v := reflect.ValueOf(model)
 	if v.Kind() == reflect.Ptr {

@@ -79,7 +79,7 @@ export const Registration = observer(() => {
           </button>
 
           <p>
-            Есть аккаунт? <a>Войти</a>
+            Есть аккаунт? <a href={'/auth/sign-in'}>Войти</a>
           </p>
         </form>
       </div>
