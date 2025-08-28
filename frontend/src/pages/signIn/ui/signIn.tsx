@@ -1,31 +1,58 @@
 import { Input } from "@/shared/ui/input";
 import s from "./signIn.module.scss";
-import { type ChangeEvent, useState } from "react";
+import { useForm } from "react-hook-form";
+
+type SignInFormT = {
+  email: string;
+  password: string;
+};
 
 export const SignIn = () => {
-  const [signInForm, setForm] = useState({
-    email: "",
-    password: ""
+  const { register, handleSubmit } = useForm<SignInFormT>({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
 
-  const handleSignInFormChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setForm({ ...signInForm, [name]: value });
+  const onSubmit = (data: SignInFormT) => {
+    console.log("Sign in with:", data);
   };
 
   return (
     <div className={s.body}>
       <div className={s.container}>
         <h1>Вход</h1>
-        <form>
-          <Input label={"Email"} value={signInForm.email} onChange={handleSignInFormChange}
-                 placeholder={"Введите адрес электронной почты"} />
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Input
+            label="Email"
+            placeholder="Введите адрес электронной почты"
+            {...register("email", {
+              required: "Введите email",
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: "Неверный формат email",
+              },
+            })}
+          />
 
-          <Input label={"Пароль"} value={signInForm.password} onChange={handleSignInFormChange}
-                 placeholder={"Введите пароль"} />
+          <Input
+            label="Пароль"
+            type="password"
+            placeholder="Введите пароль"
+            {...register("password", {
+              required: "Введите пароль",
+              minLength: { value: 6, message: "Минимум 6 символов" },
+            })}
+          />
 
-          <button>Войти</button>
-          <p>Нет аккаунта? <a>Зарегистрироваться</a></p>
+          <button type="submit" className={s.signInButton}>
+            Войти
+          </button>
+
+          <p>
+            Нет аккаунта? <a>Зарегистрироваться</a>
+          </p>
         </form>
       </div>
     </div>

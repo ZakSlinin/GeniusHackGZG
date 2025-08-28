@@ -48,12 +48,6 @@ export const Registration = () => {
             onChange={(val) => onBarChange(val)}
             values={["Волонтёр", "Координатор", "Организатор"]}
           />
-          {/*<BarSelector*/}
-          {/*  values={["йцуйцу", "123", "Организqweqweатор"]}*/}
-          {/*  onChange={(val) => console.log("Выбрано:", val)}   */}
-          {/*  className="myBar"*/}
-          {/*  fontSize={10}*/}
-          {/*/>*/}
 
           <button className={s.signUpButton}>Зарегистрироваться</button>
           <p>
