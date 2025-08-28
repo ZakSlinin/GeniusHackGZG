@@ -1,12 +1,7 @@
 import { Bar } from "../../scoreBar/bar";
-import s from "./roleBox.module.css";
+import s from "./roleBox.module.scss";
 import type { IvolunteerGroup } from "@/shared/interfaces/IvolunteerGroup.tsx";
 
-/**
- * progress bar + role visualizer
- *
- * использовать на странице "координировать"
- */
 
 export const RoleBox = ({ name, needed, registered }: IvolunteerGroup) => {
   const level = needed > 0 ? (registered / needed) * 100 : 0;

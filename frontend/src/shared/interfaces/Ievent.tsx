@@ -4,7 +4,7 @@ export interface Ievent {
   name: string,
   category: string,
   createdBy: string,
-  date: string | Date,
+  date: Date,
   timeStart: string,
   timeEnd: string,
   location: string,

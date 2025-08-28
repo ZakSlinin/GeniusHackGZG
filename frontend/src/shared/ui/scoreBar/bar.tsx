@@ -7,7 +7,7 @@ export const Bar = ({ level }: { level: number }) => {
         {
           width: level + "%"
         }
-      } className={"bar"}></div>
+      } className={s.bar}></div>
     </div>
   );
 };

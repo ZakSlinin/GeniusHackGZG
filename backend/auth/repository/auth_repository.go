@@ -3,17 +3,24 @@ package repository
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
-	"github.com/jmoiron/sqlx"
 	"reflect"
 	"strings"
+
+	"github.com/jackc/pgx/v5/pgconn"
+	"github.com/jmoiron/sqlx"
 )
 
 type AuthRepository struct {
 	db *sqlx.DB
 }
 
-func _NewAuthRepository(db *sqlx.DB) *AuthRepository {
+var (
+	ErrConflict = errors.New("conflict")
+)
+
+func NewAuthRepository(db *sqlx.DB) *AuthRepository {
 	return &AuthRepository{db: db}
 }
 
@@ -22,7 +29,7 @@ func (r *AuthRepository) CreateUser(ctx context.Context, username, password, ema
 
 	switch tableName {
 	case "coordinators":
-		query = `INSERT INTO coordinators (username, password, email, events_coordinated, current_coordinate) VALUES ($1, $2, $3, NULL, NULL) RETURNING username`
+		query = `INSERT INTO coordinator (username, password, email, events_coordinated, current_coordinate) VALUES ($1, $2, $3, NULL, NULL) RETURNING username`
 	case "volunteer":
 		query = `INSERT INTO volunteer (username, password, email, events_visited, hours_of_help, history_of_activity, current_activity) VALUES ($1, $2, $3, NULL, NULL, NULL, NULL) RETURNING username`
 	case "organization":
@@ -35,6 +42,12 @@ func (r *AuthRepository) CreateUser(ctx context.Context, username, password, ema
 	err := r.db.QueryRowContext(ctx, query, username, password, email).Scan(&createdUsername)
 
 	if err != nil {
+		var pgErr *pgconn.PgError
+		if errors.As(err, &pgErr) {
+			if pgErr.Code == "23505" {
+				return "", ErrConflict
+			}
+		}
 		return "", fmt.Errorf("failed to create %s: %w", tableName, err)
 	}
 

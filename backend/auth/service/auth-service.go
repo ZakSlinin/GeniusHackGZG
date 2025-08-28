@@ -2,15 +2,15 @@ package service
 
 import (
 	"context"
-	"errors"
 	"fmt"
+	"os"
+	"strings"
+	"time"
+
 	"github.com/ZakSlinin/GeniusHackGZG/auth/model"
 	"github.com/ZakSlinin/GeniusHackGZG/auth/repository"
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
-	"os"
-	"strings"
-	"time"
 )
 
 type AuthService struct {
@@ -25,30 +25,23 @@ func HashPassword(password string) (string, error) {
 }
 
 func (s *AuthService) CreateVolunteer(ctx context.Context, volunteer model.Volunteer) (string, error) {
-	newUsername, err := s.repo.CreateUser(ctx, volunteer.Username, volunteer.Password, volunteer.Email, "volunteer")
+	// 1) Хешируем пароль
+	hashPassword, err := HashPassword(volunteer.Password)
 	if err != nil {
+		return "", fmt.Errorf("failed to hash password: %w", err)
+	}
+	volunteer.Password = hashPassword
+
+	// 2) Создаём пользователя ОДИН РАЗ
+	if _, err := s.repo.CreateUser(ctx, volunteer.Username, volunteer.Password, volunteer.Email, "volunteer"); err != nil {
 		return "", err
 	}
 
-	hashPassword, err := HashPassword(volunteer.Password)
-	if err != nil {
-		errors.New("failed to hash password")
-	}
-
-	volunteer.Password = hashPassword
-	if _, err := s.repo.CreateUser(ctx, volunteer.Username, hashPassword, volunteer.Email, "volunteer"); err != nil {
-		return "error to create volunteer", err
-	}
-
-	return newUsername, nil
-
-	// Генерация JWT
-
+	// 3) Генерация JWT и возврат
 	token, err := GenerateJWTForVolunteer(volunteer)
 	if err != nil {
 		return "", err
 	}
-
 	return token, nil
 }
 
