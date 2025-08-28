@@ -6,7 +6,7 @@ class creatingEvent {
     makeAutoObservable(this);
   }
 
-  CreateNewEvent = (basicInputs: NodeList, basicTextarea: object, contactInputs: NodeList, roles: IvolunteerGroup[]) => {
+  CreateNewEvent = (basicInputs: NodeList, basicTextarea: NodeList, contactInputs: NodeList, roles: IvolunteerGroup[]) => {
     console.log(basicInputs, basicTextarea, contactInputs, roles);
     /**
      *  Создание нового мероприятия
