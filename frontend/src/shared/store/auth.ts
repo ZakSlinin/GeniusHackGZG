@@ -32,7 +32,7 @@ class AuthApi {
         : "organizator";
 
     try {
-      const user = await axios.post("api", {
+      const user = await axios.post(`http://localhost:8080/register/${role}`, {
         name,
         email,
         password,
@@ -45,10 +45,10 @@ class AuthApi {
       };
 
       if (finalData.user) {
-        Cookies.set("auth", JSON.stringify(finalData), { expires: 1 });
+        Cookies.set("auth", JSON.stringify(finalData), { expires: 30 });
       }
-    } catch {
-      alert("error");
+    } catch (e) {
+      console.error(e);
     }
   };
 }
