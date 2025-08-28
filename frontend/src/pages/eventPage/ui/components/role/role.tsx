@@ -33,6 +33,7 @@ export const Role = ({
           <Bar level={(registered / needed) * 100} />
           <button
             onClick={click}
+            disabled={registered == needed}
             style={{
               backgroundColor: `${
                 registered < needed ? "#000" : "#767676"

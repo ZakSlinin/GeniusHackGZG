@@ -23,4 +23,3 @@ export const RoleBox = ({ name, needed, registered }: IvolunteerGroup) => {
     </div>
   );
 };
-
