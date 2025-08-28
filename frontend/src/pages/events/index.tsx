@@ -1,19 +1,21 @@
+import { lazy, useState } from "react";
 import s from "./index.module.scss";
 
 import { EventCard } from "@/entities/event/ui/event-card";
-import { FilterModal } from "./ui/filter-modal";
 import { SearchInput } from "./ui/search-input";
-import { useState } from "react";
+import { FilterModalContent } from "./ui/filter-modal-content";
+
+const Modal = lazy(() => import("@/shared/ui/modal/"));
 
 export const EventsPage = () => {
   const [isFilterOpened, setIsFilterOpened] = useState(false);
 
   return (
     <>
-      <FilterModal
-        isOpen={isFilterOpened}
-        onClose={() => setIsFilterOpened(!isFilterOpened)}
-      />
+      <Modal isOpen={isFilterOpened} onClose={() => setIsFilterOpened(false)}>
+        <FilterModalContent />
+      </Modal>
+
       <div className={s.eventsPage}>
         <div className={s.searchSection}>
           <SearchInput />
@@ -25,6 +27,7 @@ export const EventsPage = () => {
             FF.
           </button>
         </div>
+
         <ul className={s.eventsList}>
           {Array.from({ length: 20 }, () => (
             <li>

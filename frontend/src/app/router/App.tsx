@@ -4,6 +4,8 @@ import { Event } from "@/pages/eventPage/event.tsx";
 import { EventsPage } from "@/pages/events";
 import { CreateNewEvent } from "@/pages/create/index";
 import { PRIVATE_PAGES } from "@/shared/config/pages.config";
+import { Registration } from "@/pages/registration/registration";
+import { SignIn } from "@/pages/signIn/signIn";
 
 export const App = () => {
   return (
@@ -11,6 +13,8 @@ export const App = () => {
       <Header />
       <Routes>
         <Route path={PRIVATE_PAGES.HOME} element={<EventsPage />} />
+        <Route path={PRIVATE_PAGES.REGISTER} element={<Registration />} />
+        <Route path={PRIVATE_PAGES.LOGIN} element={<SignIn />} />
         <Route path={PRIVATE_PAGES.NEW_EVENT} element={<CreateNewEvent />} />
         <Route
           path={PRIVATE_PAGES.EVENT}

@@ -10,34 +10,39 @@ interface BarSelectorProps {
 }
 
 export const BarSelector = ({
-                              values,
-                              onChange,
-                              className,
-                              fontSize,
-                              itemWidth
-                            }: BarSelectorProps) => {
-  const [selected, setSelected] = useState(values[0]);
+  values,
+  onChange,
+  className,
+  fontSize,
+  itemWidth,
+}: BarSelectorProps) => {
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const [sliderStyle, setSliderStyle] = useState({ left: 0, width: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
   const itemsRef = useRef<(HTMLButtonElement | null)[]>([]);
 
   useEffect(() => {
-    const index = values.indexOf(selected);
-    const el = itemsRef.current[index];
     const container = containerRef.current;
-    if (el && container) {
-      const elRect = el.getBoundingClientRect();
+    const currentButton = itemsRef.current[selectedIndex];
+
+    if (itemWidth !== undefined) {
+      setSliderStyle({ left: selectedIndex * itemWidth, width: itemWidth });
+      return;
+    }
+
+    if (container && currentButton) {
+      const elRect = currentButton.getBoundingClientRect();
       const containerRect = container.getBoundingClientRect();
       setSliderStyle({
         left: elRect.left - containerRect.left,
-        width: elRect.width
+        width: elRect.width,
       });
     }
-  }, [selected, values]);
+  }, [selectedIndex, itemWidth, values.length]);
 
-  const handleClick = (value: string) => {
-    setSelected(value);
-    onChange?.(value);
+  const handleClick = (index: number) => {
+    setSelectedIndex(index);
+    onChange?.(values[index]);
   };
 
   return (
@@ -50,12 +55,14 @@ export const BarSelector = ({
         <button
           key={item}
           type="button"
-          ref={(el: HTMLButtonElement | null) => (itemsRef.current[idx] = el)}
-          onClick={() => handleClick(item)}
-          className={`${s.item} ${selected === item ? s.active : ""}`}
+          ref={(el: HTMLButtonElement | null) => {
+            itemsRef.current[idx] = el;
+          }}
+          onClick={() => handleClick(idx)}
+          className={`${s.item} ${selectedIndex === idx ? s.active : ""}`}
           style={{
-            width: itemWidth !== undefined ? `${itemWidth}px` : "auto",
-            fontSize: fontSize ? `${fontSize}px` : "inherit"
+            width: itemWidth !== undefined ? `${itemWidth}px` : undefined,
+            fontSize: fontSize ? `${fontSize}px` : undefined,
           }}
         >
           {item}

@@ -3,7 +3,7 @@ import { Calendar } from "@/shared/icons/Calendar.tsx";
 import { Clock } from "@/shared/icons/Clock.tsx";
 import { MapPin } from "@/shared/icons/MapPin.tsx";
 import { User } from "@/shared/icons/User.tsx";
-import { Bar } from "@/shared/ui/scoreBar/bar.tsx";
+import { Bar } from "@/shared/ui/scoreBar/";
 import { Phone } from "@/shared/icons/Phone.tsx";
 import { Email } from "@/shared/icons/Email.tsx";
 import s from "./event.module.scss";

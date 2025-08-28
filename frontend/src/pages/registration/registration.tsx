@@ -1,14 +1,14 @@
 import s from "./registration.module.scss";
 import { Input } from "@/shared/ui/input";
 import { type ChangeEvent, useState } from "react";
-import { BarSelector } from "@/shared/ui/barSelector/BarSelector.tsx";
+import { BarSelector } from "@/shared/ui/barSelector/";
 
 export const Registration = () => {
   const [registrationForm, setForm] = useState({
     name: "",
     email: "",
     password: "",
-    role: ""
+    role: "",
   });
 
   const handleRegistrationFormChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -25,15 +25,29 @@ export const Registration = () => {
       <div className={s.container}>
         <h1>Вход</h1>
         <form>
+          <Input
+            label={"Имя пользователя"}
+            value={registrationForm.name}
+            onChange={handleRegistrationFormChange}
+            placeholder={"Введите имя пользователя"}
+          />
+          <Input
+            label={"Пароль"}
+            value={registrationForm.password}
+            onChange={handleRegistrationFormChange}
+            placeholder={"Введите пароль"}
+          />
+          <Input
+            label={"Email"}
+            value={registrationForm.email}
+            onChange={handleRegistrationFormChange}
+            placeholder={"Введите адрес электронной почты"}
+          />
 
-          <Input label={"Имя пользователя"} value={registrationForm.name} onChange={handleRegistrationFormChange}
-                 placeholder={"Введите имя пользователя"} />
-          <Input label={"Пароль"} value={registrationForm.password} onChange={handleRegistrationFormChange}
-                 placeholder={"Введите пароль"} />
-          <Input label={"Email"} value={registrationForm.email} onChange={handleRegistrationFormChange}
-                 placeholder={"Введите адрес электронной почты"} />
-
-          <BarSelector onChange={(val) => onBarChange(val)} values={["Волонтёр", "Координатор", "Организатор"]} />
+          <BarSelector
+            onChange={(val) => onBarChange(val)}
+            values={["Волонтёр", "Координатор", "Организатор"]}
+          />
           {/*<BarSelector*/}
           {/*  values={["йцуйцу", "123", "Организqweqweатор"]}*/}
           {/*  onChange={(val) => console.log("Выбрано:", val)}   */}
@@ -42,7 +56,9 @@ export const Registration = () => {
           {/*/>*/}
 
           <button className={s.signUpButton}>Зарегистрироваться</button>
-          <p>Есть аккаунт? <a>Войти</a></p>
+          <p>
+            Есть аккаунт? <a>Войти</a>
+          </p>
         </form>
       </div>
     </div>
